@@ -38,7 +38,7 @@ HUD是Head Up Display的缩写，指的是抬头平视显示设计，简称HUD�
 
 下图为游戏“皇牌空战6”的HUD。
 
-![皇牌空战6](/content/images/2017/05/hud.jpg)
+![&#x7687;&#x724C;&#x7A7A;&#x6218;6](.gitbook/assets/hud.jpg)
 
 HUD是游戏的辅助系统，它的设计重点是信息整合和合理摆放，以此来满足玩家最直接的需求。玩家通过HUD可以随时注意到游戏中最重要的信息（诸如血量、时间、比分等），而且不需要暂停游戏去查看别的窗口。
 
@@ -48,109 +48,110 @@ HUD是游戏的辅助系统，它的设计重点是信息整合和合理摆放�
 
 jME3是一个3D游戏引擎，3D环境下的GUI和2D有很大的不同。2D游戏可以通过图形API直接在窗口上绘图，而3D游戏不可以。只有2D环境下才有矩形、圆形、图片等概念，3D环境多了一个维度，变成了方块、球体、圆柱等多边形网格。
 
-在jME3中，我们无法直接在屏幕上绘制一张图片，但是却可以通过一些方法来欺骗玩家的眼睛。最常用的方式是：先创建一个四边形(Quad)几何体，然后把要显示的图片作为纹理贴图应用到这个四边形上。
-
+在jME3中，我们无法直接在屏幕上绘制一张图片，但是却可以通过一些方法来欺骗玩家的眼睛。最常用的方式是：先创建一个四边形\(Quad\)几何体，然后把要显示的图片作为纹理贴图应用到这个四边形上。
 
 作为例子，我随手画了一张界面白板图，将其存放在项目的resource目录中，路径为`Interface/Gui/pic.png`。
 
-![界面白板图](/content/images/2017/05/pic.png)
+![&#x754C;&#x9762;&#x767D;&#x677F;&#x56FE;](.gitbook/assets/pic.png)
 
 下面的代码演示了如何在jME3中显示这张“图片”。
 
-    package net.jmecn.gui;
-    
-    import com.jme3.app.SimpleApplication;
-    import com.jme3.material.Material;
-    import com.jme3.math.ColorRGBA;
-    import com.jme3.math.Vector3f;
-    import com.jme3.scene.Geometry;
-    import com.jme3.scene.Spatial;
-    import com.jme3.scene.debug.Arrow;
-    import com.jme3.scene.shape.Quad;
-    import com.jme3.texture.Texture;
-    
-    /**
-     * 伪装图片
-     * @author yanmaoyuan
-     *
-     */
-    public class FakePicture extends SimpleApplication {
-    
-        public static void main(String[] args) {
-            // 启动游戏
-            FakePicture app = new FakePicture();
-            app.start();
-        }
-    
-        @Override
-        public void simpleInitApp() {
-    
-            // 创建X、Y、Z方向的箭头，作为参考坐标系。
-            createArrow(new Vector3f(5, 0, 0), ColorRGBA.Green);
-            createArrow(new Vector3f(0, 5, 0), ColorRGBA.Red);
-            createArrow(new Vector3f(0, 0, 5), ColorRGBA.Blue);
-    
-            // 加载“图片”
-            Spatial pic = getPicture();
-    
-            // 将“图片”添加到场景图中
-            rootNode.attachChild(pic);
-        }
-    
-        /**
-         * 创建一个“图片”
-         * 
-         * @return
-         */
-        private Spatial getPicture() {
-            // 创建一个四边形
-            Quad quad = new Quad(4, 3);
-            Geometry geom = new Geometry("Picture", quad);
-    
-            // 加载图片
-            Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
-    
-            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            mat.setTexture("ColorMap", tex);
-    
-            // 应用这个材质
-            geom.setMaterial(mat);
-    
-            return geom;
-        }
-    
-        /**
-         * 创建一个箭头
-         * 
-         * @param vec3 箭头向量
-         * @param color 箭头颜色
-         */
-        private void createArrow(Vector3f vec3, ColorRGBA color) {
-            // 创建材质，设定箭头的颜色
-            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            mat.setColor("Color", color);
-    
-            // 创建几何物体，应用箭头网格。
-            Geometry geom = new Geometry("arrow", new Arrow(vec3));
-            geom.setMaterial(mat);
-    
-            // 添加到场景中
-            rootNode.attachChild(geom);
-        }
-    
+```text
+package net.jmecn.gui;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.debug.Arrow;
+import com.jme3.scene.shape.Quad;
+import com.jme3.texture.Texture;
+
+/**
+ * 伪装图片
+ * @author yanmaoyuan
+ *
+ */
+public class FakePicture extends SimpleApplication {
+
+    public static void main(String[] args) {
+        // 启动游戏
+        FakePicture app = new FakePicture();
+        app.start();
     }
+
+    @Override
+    public void simpleInitApp() {
+
+        // 创建X、Y、Z方向的箭头，作为参考坐标系。
+        createArrow(new Vector3f(5, 0, 0), ColorRGBA.Green);
+        createArrow(new Vector3f(0, 5, 0), ColorRGBA.Red);
+        createArrow(new Vector3f(0, 0, 5), ColorRGBA.Blue);
+
+        // 加载“图片”
+        Spatial pic = getPicture();
+
+        // 将“图片”添加到场景图中
+        rootNode.attachChild(pic);
+    }
+
+    /**
+     * 创建一个“图片”
+     * 
+     * @return
+     */
+    private Spatial getPicture() {
+        // 创建一个四边形
+        Quad quad = new Quad(4, 3);
+        Geometry geom = new Geometry("Picture", quad);
+
+        // 加载图片
+        Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
+
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setTexture("ColorMap", tex);
+
+        // 应用这个材质
+        geom.setMaterial(mat);
+
+        return geom;
+    }
+
+    /**
+     * 创建一个箭头
+     * 
+     * @param vec3 箭头向量
+     * @param color 箭头颜色
+     */
+    private void createArrow(Vector3f vec3, ColorRGBA color) {
+        // 创建材质，设定箭头的颜色
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", color);
+
+        // 创建几何物体，应用箭头网格。
+        Geometry geom = new Geometry("arrow", new Arrow(vec3));
+        geom.setMaterial(mat);
+
+        // 添加到场景中
+        rootNode.attachChild(geom);
+    }
+
+}
+```
 
 作为一张“图片”，这个四边形不需要光照也应该能够正常显示，因此这里选用Unshaded.j3md材质。另外，为了突显3D环境，场景中还添加了3个箭头作为坐标系的参造物，其中绿色为X轴，红色为Y轴，蓝色为Z轴。
 
 运行程序，效果如下。
 
-![显示“图片”](/content/images/2017/05/FakePicture.png)
+![&#x663E;&#x793A;&#x201C;&#x56FE;&#x7247;&#x201D;](.gitbook/assets/FakePicture%20%281%29.png)
 
 这个技巧在很多3D游戏中都有所应用，只是一种障眼法。使用这种技巧的游戏又被称为2.5D游戏。很多早期游戏中都使用了这种“纸片人”的技巧，[知乎：开发游戏时，有哪些欺骗人眼睛的技巧？](https://www.zhihu.com/question/41720683)
 
-![](/content/images/2017/05/2_5_d_car.png)
+![](.gitbook/assets/2_5_d_car.png)
 
-![](/content/images/2017/05/2_5_d_car_pic.png)
+![](.gitbook/assets/2_5_d_car_pic.png)
 
 ### GuiNode
 
@@ -158,11 +159,11 @@ jME3是一个3D游戏引擎，3D环境下的GUI和2D有很大的不同。2D游�
 
 在现实世界中我们要做到这些其实挺简单的，只要把“图片”直接贴在镜片上就好了！
 
-![glass](/content/images/2017/05/glass.png)
+![glass](.gitbook/assets/glass.png)
 
 VR头盔、Google Glass等设备虽然非常复杂，但是其本意都是直接在人眼处做文章。
 
-![google project glass](/content/images/2017/05/google_glass.jpg)
+![google project glass](.gitbook/assets/google_glass.jpg)
 
 说穿了，在现实世界中我们欺骗人的眼睛，在3D引擎中我们欺骗虚拟“摄像机”。为了让一个图片看起来更像是屏幕上的Gui，我们需要一些额外的障眼法，例如：
 
@@ -174,94 +175,96 @@ VR头盔、Google Glass等设备虽然非常复杂，但是其本意都是直接
 
 修改一下上一章的代码，把rootNode改为guiNode，看看会发生什么。
 
-    package net.jmecn.gui;
-    
-    import com.jme3.app.SimpleApplication;
-    import com.jme3.material.Material;
-    import com.jme3.math.ColorRGBA;
-    import com.jme3.math.Vector3f;
-    import com.jme3.scene.Geometry;
-    import com.jme3.scene.Spatial;
-    import com.jme3.scene.debug.Arrow;
-    import com.jme3.scene.shape.Quad;
-    import com.jme3.texture.Texture;
-    
-    /**
-     * GuiNode
-     * @author yanmaoyuan
-     *
-     */
-    public class HelloGUI extends SimpleApplication {
-    
-        public static void main(String[] args) {
-            // 启动程序
-            HelloGUI app = new HelloGUI();
-            app.start();
-        }
-    
-        @Override
-        public void simpleInitApp() {
-            
-            // 创建X、Y、Z方向的箭头，作为参考坐标系。
-            createArrow(new Vector3f(5, 0, 0), ColorRGBA.Green);
-            createArrow(new Vector3f(0, 5, 0), ColorRGBA.Red);
-            createArrow(new Vector3f(0, 0, 5), ColorRGBA.Blue);
-    
-            // 加载“图片”
-            Spatial pic = getPicture();
-            
-            // 将“图片”添加到GUI场景中
-            guiNode.attachChild(pic);
-        }
-    
-        /**
-         * 创建一个“图片”
-         * @return
-         */
-        private Spatial getPicture() {
-            // 创建一个四边形
-            Quad quad = new Quad(4, 3);
-            Geometry geom = new Geometry("Picture", quad);
-    
-            // 加载图片
-            Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
-    
-            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            mat.setTexture("ColorMap", tex);
-            
-            // 应用这个材质
-            geom.setMaterial(mat);
-    
-            return geom;
-        }
-        
-        /**
-         * 创建一个箭头
-         * 
-         * @param vec3  箭头向量
-         * @param color 箭头颜色
-         */
-        private void createArrow(Vector3f vec3, ColorRGBA color) {
-            // 创建材质，设定箭头的颜色
-            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            mat.setColor("Color", color);
-    
-            // 创建几何物体，应用箭头网格。
-            Geometry geom = new Geometry("arrow", new Arrow(vec3));
-            geom.setMaterial(mat);
-    
-            // 添加到GUI场景中
-            guiNode.attachChild(geom);
-        }
+```text
+package net.jmecn.gui;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.debug.Arrow;
+import com.jme3.scene.shape.Quad;
+import com.jme3.texture.Texture;
+
+/**
+ * GuiNode
+ * @author yanmaoyuan
+ *
+ */
+public class HelloGUI extends SimpleApplication {
+
+    public static void main(String[] args) {
+        // 启动程序
+        HelloGUI app = new HelloGUI();
+        app.start();
     }
+
+    @Override
+    public void simpleInitApp() {
+
+        // 创建X、Y、Z方向的箭头，作为参考坐标系。
+        createArrow(new Vector3f(5, 0, 0), ColorRGBA.Green);
+        createArrow(new Vector3f(0, 5, 0), ColorRGBA.Red);
+        createArrow(new Vector3f(0, 0, 5), ColorRGBA.Blue);
+
+        // 加载“图片”
+        Spatial pic = getPicture();
+
+        // 将“图片”添加到GUI场景中
+        guiNode.attachChild(pic);
+    }
+
+    /**
+     * 创建一个“图片”
+     * @return
+     */
+    private Spatial getPicture() {
+        // 创建一个四边形
+        Quad quad = new Quad(4, 3);
+        Geometry geom = new Geometry("Picture", quad);
+
+        // 加载图片
+        Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
+
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setTexture("ColorMap", tex);
+
+        // 应用这个材质
+        geom.setMaterial(mat);
+
+        return geom;
+    }
+
+    /**
+     * 创建一个箭头
+     * 
+     * @param vec3  箭头向量
+     * @param color 箭头颜色
+     */
+    private void createArrow(Vector3f vec3, ColorRGBA color) {
+        // 创建材质，设定箭头的颜色
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", color);
+
+        // 创建几何物体，应用箭头网格。
+        Geometry geom = new Geometry("arrow", new Arrow(vec3));
+        geom.setMaterial(mat);
+
+        // 添加到GUI场景中
+        guiNode.attachChild(geom);
+    }
+}
+```
 
 运行程序，观察一下效果。
 
-![guiNode](/content/images/2017/05/guiNode.png)
+![guiNode](.gitbook/assets/guiNode.png)
 
 奇怪了，为什么什么都没了？坐标轴呢？图片呢？
 
-![黑人问号](/content/images/2017/05/why.jpg)
+![&#x9ED1;&#x4EBA;&#x95EE;&#x53F7;](.gitbook/assets/why.jpg)
 
 先按下F5，关闭左下角的状态界面。然后把你的全部注意力都集中到画面的左下角，仔细观察那里有什么？
 
@@ -269,21 +272,21 @@ VR头盔、Google Glass等设备虽然非常复杂，但是其本意都是直接
 
 为了保护你的视力，我把左下角的画面放大8倍，然后再观察。
 
-![small picture](/content/images/2017/05/small_pic.png)
+![small picture](.gitbook/assets/small_pic.png)
 
 是的，这个小玩意就是我们上文中出现过的坐标轴和图片。为什么它在guiNode中看起来比在rootNode小那么多？
 
 这是因为guiNode和rootNode中的单位不一样。
 
-rootNode中的数值并没有单位。通过一个透视摄像机去观察场景，看到的画面遵循近大远小的原则。“图片”的大小为4*3个单位，摄像机距离它不超过10个单位距离，因此看起来是比较大的。如果我们把摄像机退远之后再观察，这个物体看起来就会变小。下图是退后200个单位距离后看到的结果。
+rootNode中的数值并没有单位。通过一个透视摄像机去观察场景，看到的画面遵循近大远小的原则。“图片”的大小为4\*3个单位，摄像机距离它不超过10个单位距离，因此看起来是比较大的。如果我们把摄像机退远之后再观察，这个物体看起来就会变小。下图是退后200个单位距离后看到的结果。
 
-![远距离观察物体](/content/images/2017/05/far_away.png)
+![&#x8FDC;&#x8DDD;&#x79BB;&#x89C2;&#x5BDF;&#x7269;&#x4F53;](.gitbook/assets/far_away.png)
 
-guiNode中的物体会被绘制到屏幕上，屏幕的单位是像素（pixel）。getPicture()方法中定义的“图片”宽和高分别是4和3，因此通过摄像机观察它时，它只有4x3像素这么大。而坐标轴的长度只有5，也就是5个像素，看起来也很短。
+guiNode中的物体会被绘制到屏幕上，屏幕的单位是像素（pixel）。getPicture\(\)方法中定义的“图片”宽和高分别是4和3，因此通过摄像机观察它时，它只有4x3像素这么大。而坐标轴的长度只有5，也就是5个像素，看起来也很短。
 
-下面稍微修改一下代码，把图片的大小改为400*300，坐标轴的长度改为500。
+下面稍微修改一下代码，把图片的大小改为400\*300，坐标轴的长度改为500。
 
-![放大100倍后](/content/images/2017/05/100size.png)
+![&#x653E;&#x5927;100&#x500D;&#x540E;](.gitbook/assets/100size.png)
 
 通过上图可以得出结论：**在jME3中，屏幕采用XOY坐标系，单位为像素。坐标系原点O位于屏幕左下角，向右为X轴正方向，向上为Y轴正方向。**
 
@@ -293,75 +296,78 @@ guiNode中的物体会被绘制到屏幕上，屏幕的单位是像素（pixel�
 
 下面我们调整一下代码，让图片填充整个屏幕。
 
-    /**
-     * 创建一个“图片”
-     * @return
-     */
-    private Spatial getPicture() {
-        
-        // 获得屏幕分辨率
-        float width = cam.getWidth();
-        float height = cam.getHeight();
-        
-        // 创建一个四边形
-        Quad quad = new Quad(width, height);
-        Geometry geom = new Geometry("Picture", quad);
+```text
+/**
+ * 创建一个“图片”
+ * @return
+ */
+private Spatial getPicture() {
 
-        // 加载图片
-        Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
+    // 获得屏幕分辨率
+    float width = cam.getWidth();
+    float height = cam.getHeight();
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setTexture("ColorMap", tex);
-        
-        // 应用这个材质
-        geom.setMaterial(mat);
+    // 创建一个四边形
+    Quad quad = new Quad(width, height);
+    Geometry geom = new Geometry("Picture", quad);
 
-        return geom;
-    }
+    // 加载图片
+    Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
+
+    Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    mat.setTexture("ColorMap", tex);
+
+    // 应用这个材质
+    geom.setMaterial(mat);
+
+    return geom;
+}
+```
 
 运行程序，效果如下：
 
-![全屏显示](/content/images/2017/05/full_screen.png)
+![&#x5168;&#x5C4F;&#x663E;&#x793A;](.gitbook/assets/full_screen.png)
 
 #### 图像居中
 
 有了屏幕的分辨率和图像的分辨率，就可以计算坐标图像居中时的x、y坐标，然后通过`setLocalTranslation(float x, float y, float z)`或`move(float x, float y, float z)`方法来改变图片的相对位置。
 
-    /**
-     * 创建一个“图片”
-     * @return
-     */
-    private Spatial getPicture() {
-        
-        // 获得屏幕分辨率
-        float width = 400;
-        float height = 300;
-        
-        // 创建一个四边形
-        Quad quad = new Quad(width, height);
-        Geometry geom = new Geometry("Picture", quad);
+```text
+/**
+ * 创建一个“图片”
+ * @return
+ */
+private Spatial getPicture() {
 
-        // 计算图像居中的坐标
-        float x = 0.5f * (cam.getWidth() - width);
-        float y = 0.5f * (cam.getHeight() - height);
-        geom.setLocalTranslation(x, y, 0);// 改变geom在guiNode中的相对位置
-        
-        // 加载图片
-        Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
+    // 获得屏幕分辨率
+    float width = 400;
+    float height = 300;
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setTexture("ColorMap", tex);
-        
-        // 应用这个材质
-        geom.setMaterial(mat);
+    // 创建一个四边形
+    Quad quad = new Quad(width, height);
+    Geometry geom = new Geometry("Picture", quad);
 
-        return geom;
-    }
+    // 计算图像居中的坐标
+    float x = 0.5f * (cam.getWidth() - width);
+    float y = 0.5f * (cam.getHeight() - height);
+    geom.setLocalTranslation(x, y, 0);// 改变geom在guiNode中的相对位置
+
+    // 加载图片
+    Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
+
+    Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    mat.setTexture("ColorMap", tex);
+
+    // 应用这个材质
+    geom.setMaterial(mat);
+
+    return geom;
+}
+```
 
 效果如下：
 
-![图像居中](/content/images/2017/05/center_screen.png)
-
+![&#x56FE;&#x50CF;&#x5C45;&#x4E2D;](.gitbook/assets/center_screen.png)
 
 #### Z坐标
 
@@ -369,38 +375,40 @@ guiNode中的物体会被绘制到屏幕上，屏幕的单位是像素（pixel�
 
 通过`setLocalTranslation(float x, float y, float z)`或`move(float x, float y, float z)`方法的第3个参数就可以设置图片的Z坐标。下面我们把图片全屏显示，并把它的Z坐标改为-1，看看会发生什么。
 
-    /**
-     * 创建一个“图片”
-     * @return
-     */
-    private Spatial getPicture() {
-        
-        // 获得屏幕分辨率
-        float width = cam.getWidth();
-        float height = cam.getHeight();
-        
-        // 创建一个四边形
-        Quad quad = new Quad(width, height);
-        Geometry geom = new Geometry("Picture", quad);
-        
-        // 将Z坐标设为-1
-        geom.setLocalTranslation(0, 0, -1);
+```text
+/**
+ * 创建一个“图片”
+ * @return
+ */
+private Spatial getPicture() {
 
-        // 加载图片
-        Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
+    // 获得屏幕分辨率
+    float width = cam.getWidth();
+    float height = cam.getHeight();
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setTexture("ColorMap", tex);
-        
-        // 应用这个材质
-        geom.setMaterial(mat);
+    // 创建一个四边形
+    Quad quad = new Quad(width, height);
+    Geometry geom = new Geometry("Picture", quad);
 
-        return geom;
-    }
+    // 将Z坐标设为-1
+    geom.setLocalTranslation(0, 0, -1);
+
+    // 加载图片
+    Texture tex = assetManager.loadTexture("Interface/Gui/pic.png");
+
+    Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    mat.setTexture("ColorMap", tex);
+
+    // 应用这个材质
+    geom.setMaterial(mat);
+
+    return geom;
+}
+```
 
 效果如下：
 
-![改变Z坐标](/content/images/2017/05/z_axis.png)
+![&#x6539;&#x53D8;Z&#x5750;&#x6807;](.gitbook/assets/z_axis.png)
 
 可以看到，当图片的Z坐标变成-1后，原本被图片挡住的坐标轴和左下角的状态界面又出现了。
 
@@ -416,46 +424,48 @@ guiNode中的物体会被绘制到屏幕上，屏幕的单位是像素（pixel�
 
 透视投影的原理来源于小孔成像，与人眼的工作原理类似。jME3的摄像机默认采用的就是透视投影，因此场景中的物体看起来才更真实。
 
-![透视投影](/content/images/2017/05/perspective.jpg)
+![&#x900F;&#x89C6;&#x6295;&#x5F71;](.gitbook/assets/perspective.jpg)
 
 正交投影又称为平行投影（Parallel projection），无论摄像机距离物体多远，物体的大小都不会改变。guiNode中的场景渲染采用的是正交投影，因此改变Z坐标并不会改变物体的大小。
 
-![正交投影](/content/images/2017/05/ortho.png)
+![&#x6B63;&#x4EA4;&#x6295;&#x5F71;](.gitbook/assets/ortho.png)
 
 在jME3中，摄像机默认采用透视投影，可以通过`cam.setParallelProjection(true)`来开启摄像机的平行投影功能。
 
 通过`cam.setFrustum(float near, float far, float left, float right, float top, float bottom)`可以改变摄像机的视锥参数。`near`和`far`这两个参数决定了摄像机能观察到的物体Z坐标范围，其他4个参数决定了视口的大小。
 
-    @Override
-    public void simpleInitApp() {
-        flyCam.setMoveSpeed(50);
-        cam.setLocation(new Vector3f(5.076195f, 5.100953f, 10.473327f));
-        cam.setRotation(new Quaternion(-0.03069693f, 0.96919596f, -0.16531673f, -0.17996438f));
-        
-        // 改变视锥大小
-        cam.setFrustum(-999, 999, 4, -4, 3, -3);
-        // 开启平行投影
-        cam.setParallelProjection(true);
+```text
+@Override
+public void simpleInitApp() {
+    flyCam.setMoveSpeed(50);
+    cam.setLocation(new Vector3f(5.076195f, 5.100953f, 10.473327f));
+    cam.setRotation(new Quaternion(-0.03069693f, 0.96919596f, -0.16531673f, -0.17996438f));
 
-        // 创建X、Y、Z方向的箭头，作为参考坐标系。
-        createArrow(new Vector3f(5, 0, 0), ColorRGBA.Green);
-        createArrow(new Vector3f(0, 5, 0), ColorRGBA.Red);
-        createArrow(new Vector3f(0, 0, 5), ColorRGBA.Blue);
+    // 改变视锥大小
+    cam.setFrustum(-999, 999, 4, -4, 3, -3);
+    // 开启平行投影
+    cam.setParallelProjection(true);
 
-        // 加载“图片”
-        Spatial pic = getPicture();
+    // 创建X、Y、Z方向的箭头，作为参考坐标系。
+    createArrow(new Vector3f(5, 0, 0), ColorRGBA.Green);
+    createArrow(new Vector3f(0, 5, 0), ColorRGBA.Red);
+    createArrow(new Vector3f(0, 0, 5), ColorRGBA.Blue);
 
-        // 将“图片”添加到场景图中
-        rootNode.attachChild(pic);
-    }
+    // 加载“图片”
+    Spatial pic = getPicture();
+
+    // 将“图片”添加到场景图中
+    rootNode.attachChild(pic);
+}
+```
 
 通过平行投影模式去观察rootNode中的物体，效果如下：
 
-![正交投影](/content/images/2017/05/ParallelProjection.png)
+![&#x6B63;&#x4EA4;&#x6295;&#x5F71;](.gitbook/assets/ParallelProjection.png)
 
 透视投影下是这样的：
 
-![透视投影](/content/images/2017/05/FakePicture.png)
+![&#x900F;&#x89C6;&#x6295;&#x5F71;](.gitbook/assets/FakePicture.png)
 
 写到这里，我想应该可以回答新手经常问的一个问题了：jME3如何做2D游戏？
 
@@ -471,135 +481,139 @@ guiNode中的物体会被绘制到屏幕上，屏幕的单位是像素（pixel�
 
 我用gimp（一款开源的图形编辑工具）删除了pic.png图像中大部分的纯白色区域，为其添加了alpha通道，重新保存为`pic_with_alpha.png`文件。下面的代码演示了如何使用Picture类来显示图片。
 
-    package net.jmecn.gui;
-    
-    import com.jme3.app.SimpleApplication;
-    import com.jme3.light.AmbientLight;
-    import com.jme3.light.DirectionalLight;
-    import com.jme3.material.Material;
-    import com.jme3.math.ColorRGBA;
-    import com.jme3.math.FastMath;
-    import com.jme3.math.Quaternion;
-    import com.jme3.math.Vector3f;
-    import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-    import com.jme3.scene.Geometry;
-    import com.jme3.scene.shape.Box;
-    import com.jme3.scene.shape.Quad;
-    import com.jme3.ui.Picture;
-    
+```text
+package net.jmecn.gui;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Quad;
+import com.jme3.ui.Picture;
+
+/**
+ * Picture的用法。
+ * 
+ * @author yanmaoyuan
+ *
+ */
+public class HelloPicture extends SimpleApplication {
+
+    public static void main(String[] args) {
+        // 启动程序
+        HelloPicture app = new HelloPicture();
+        app.start();
+    }
+
+    @Override
+    public void simpleInitApp() {
+        // 初始化摄像机位置
+        cam.setLocation(new Vector3f(9.443982f, 13.542627f, 8.93058f));
+        cam.setRotation(new Quaternion(-0.015316938f, 0.9377411f, -0.34448296f, -0.041695934f));
+
+        flyCam.setMoveSpeed(10);
+
+        // 添加物体
+        addObjects();
+
+        // 添加光源
+        addLights();
+
+        // 添加图片
+        addPicture();
+
+        viewPort.setBackgroundColor(ColorRGBA.LightGray);
+    }
+
     /**
-     * Picture的用法。
+     * 创建一个场景
      * 
-     * @author yanmaoyuan
-     *
+     * @return
      */
-    public class HelloPicture extends SimpleApplication {
-    
-        public static void main(String[] args) {
-            // 启动程序
-            HelloPicture app = new HelloPicture();
-            app.start();
-        }
-    
-        @Override
-        public void simpleInitApp() {
-            // 初始化摄像机位置
-            cam.setLocation(new Vector3f(9.443982f, 13.542627f, 8.93058f));
-            cam.setRotation(new Quaternion(-0.015316938f, 0.9377411f, -0.34448296f, -0.041695934f));
-    
-            flyCam.setMoveSpeed(10);
-    
-            // 添加物体
-            addObjects();
-    
-            // 添加光源
-            addLights();
-    
-            // 添加图片
-            addPicture();
-    
-            viewPort.setBackgroundColor(ColorRGBA.LightGray);
-        }
-    
-        /**
-         * 创建一个场景
-         * 
-         * @return
-         */
-        private void addObjects() {
-            Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-    
-            // 创建一个平面，把它作为地板，用来承载光影
-            Geometry geom = new Geometry("Floor", new Quad(17, 17));
-            geom.setMaterial(mat);
-            geom.setShadowMode(ShadowMode.Receive);// 承载阴影
-    
-            geom.rotate(-FastMath.HALF_PI, 0, 0);
-            rootNode.attachChild(geom);
-    
-            // 创造多个方块
-            for (int y = 0; y < 10; y += 3) {
-                for (int x = 0; x < 10; x += 3) {
-                    geom = new Geometry("Cube", new Box(0.5f, 0.5f, 0.5f));
-                    geom.setMaterial(mat);
-                    geom.setShadowMode(ShadowMode.Cast);// 产生阴影
-                    geom.move(x + 4, 0.5f, -y - 4);
-                    rootNode.attachChild(geom);
-                }
+    private void addObjects() {
+        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+
+        // 创建一个平面，把它作为地板，用来承载光影
+        Geometry geom = new Geometry("Floor", new Quad(17, 17));
+        geom.setMaterial(mat);
+        geom.setShadowMode(ShadowMode.Receive);// 承载阴影
+
+        geom.rotate(-FastMath.HALF_PI, 0, 0);
+        rootNode.attachChild(geom);
+
+        // 创造多个方块
+        for (int y = 0; y < 10; y += 3) {
+            for (int x = 0; x < 10; x += 3) {
+                geom = new Geometry("Cube", new Box(0.5f, 0.5f, 0.5f));
+                geom.setMaterial(mat);
+                geom.setShadowMode(ShadowMode.Cast);// 产生阴影
+                geom.move(x + 4, 0.5f, -y - 4);
+                rootNode.attachChild(geom);
             }
-        }
-    
-        /**
-         * 添加光源
-         */
-        private void addLights() {
-    
-            // 定向光
-            DirectionalLight sunLight = new DirectionalLight();
-            sunLight.setDirection(new Vector3f(-1, -2, -3));
-            sunLight.setColor(new ColorRGBA(0.2f, 0.2f, 0.2f, 1f));
-    
-            // 环境光
-            AmbientLight ambientLight = new AmbientLight();
-            ambientLight.setColor(new ColorRGBA(0.2f, 0.2f, 0.2f, 1f));
-    
-            // 将模型和光源添加到场景图中
-            rootNode.addLight(sunLight);
-            rootNode.addLight(ambientLight);
-        }
-    
-        /**
-         * 加载“图片”
-         * 
-         * @return
-         */
-        private void addPicture() {
-            Picture pic = new Picture("picture");
-    
-            // 设置图片
-            pic.setImage(assetManager, "Interface/Gui/pic_with_alpha.png", true);
-    
-            // 设置图片全屏显示
-            pic.setWidth(cam.getWidth());
-            pic.setHeight(cam.getHeight());
-    
-            // 将图片后移一个单位，避免遮住状态界面。
-            pic.setLocalTranslation(0, 0, -1);
-    
-            guiNode.attachChild(pic);
         }
     }
 
+    /**
+     * 添加光源
+     */
+    private void addLights() {
+
+        // 定向光
+        DirectionalLight sunLight = new DirectionalLight();
+        sunLight.setDirection(new Vector3f(-1, -2, -3));
+        sunLight.setColor(new ColorRGBA(0.2f, 0.2f, 0.2f, 1f));
+
+        // 环境光
+        AmbientLight ambientLight = new AmbientLight();
+        ambientLight.setColor(new ColorRGBA(0.2f, 0.2f, 0.2f, 1f));
+
+        // 将模型和光源添加到场景图中
+        rootNode.addLight(sunLight);
+        rootNode.addLight(ambientLight);
+    }
+
+    /**
+     * 加载“图片”
+     * 
+     * @return
+     */
+    private void addPicture() {
+        Picture pic = new Picture("picture");
+
+        // 设置图片
+        pic.setImage(assetManager, "Interface/Gui/pic_with_alpha.png", true);
+
+        // 设置图片全屏显示
+        pic.setWidth(cam.getWidth());
+        pic.setHeight(cam.getHeight());
+
+        // 将图片后移一个单位，避免遮住状态界面。
+        pic.setLocalTranslation(0, 0, -1);
+
+        guiNode.attachChild(pic);
+    }
+}
+```
+
 运行结果如下：
 
-![Picture](/content/images/2017/05/Picture.png)
+![Picture](.gitbook/assets/Picture.png)
 
 需要注意的是，Picture类使用的材质并不是Unshaded.j3md，而是Gui.j3md。如果想要改变Picture的纹理，参数名并不是`ColorMap`而是`Texture`。
 
-    // 加载纹理
-    Texture tex = assetManager.loadTexture(...);
-    // 改变Picture的贴图
-    pic.getMaterial.setTexture("Texture", tex);
+```text
+// 加载纹理
+Texture tex = assetManager.loadTexture(...);
+// 改变Picture的贴图
+pic.getMaterial.setTexture("Texture", tex);
+```
 
 ### 显示文字
 
@@ -619,185 +633,188 @@ guiNode中的物体会被绘制到屏幕上，屏幕的单位是像素（pixel�
 
 [Bitmap Font](http://www.angelcode.com/products/bmfont/)是AngleCode公司开发的一种技术，用于在3D场景中显示2D的文字。这种方法的原理是把要使用的文字做成一副图片，然后由程序根据文字的内容来动态选择图块，再绘制成一副新的图片。
 
-用法：
-首先你需要用一些工具来制作BitmapFont字体，将你需要的文字整合到一个png图片上，并生成对应的fnt文件。比如：
+用法： 首先你需要用一些工具来制作BitmapFont字体，将你需要的文字整合到一个png图片上，并生成对应的fnt文件。比如：
 
 * Bitmap Font Generator
 
-![Bitmap Font Generator](/content/images/2017/05/BMFontGenerator.png)
+![Bitmap Font Generator](.gitbook/assets/BMFontGenerator.png)
 
 * Hiero
 
-![Hiero](/content/images/2017/05/Hiero.png)
+![Hiero](.gitbook/assets/Hiero.png)
 
-然后，你会得到一个.fnt文件和一个.png文件(如果字符量大，可能会有多个png文件)，这就是你得到的字体。这种字体不仅适用于JME3应用，cocos2d-x、libgdx等游戏引擎也可以使用这种字体。
+然后，你会得到一个.fnt文件和一个.png文件\(如果字符量大，可能会有多个png文件\)，这就是你得到的字体。这种字体不仅适用于JME3应用，cocos2d-x、libgdx等游戏引擎也可以使用这种字体。
 
 得到BMFont字体文件后，接下来要在程序中加载这种字体，然后使用它们。JME 3.0实现了对Bitmap Font字体的支持，而且jme3-core.jar这个lib中已经内置了2套字体（可惜是都是英文字符，没有中文。）
 
-![jME3自带字体](/content/images/2017/05/DefaultFonts.png)
+![jME3&#x81EA;&#x5E26;&#x5B57;&#x4F53;](.gitbook/assets/DefaultFonts.png)
 
 当你每次启动JME3应用程序的时候，左下角显示的参数其实就是用`Interface/Fonts/Console.fnt`和`Interface/Fonts/Default.fnt`这2个字体。
 
-![StatsAppState](/content/images/2017/05/StatsAppState.png)
+![StatsAppState](.gitbook/assets/StatsAppState.png)
 
 JME3也提供了一个样例代码，教你怎么使用BitmapFont。
 
 [jme3test.gui.TestBitmapFont](https://github.com/jMonkeyEngine/jmonkeyengine/blob/master/jme3-examples/src/main/java/jme3test/gui/TestBitmapFont.java)
 
-    package jme3test.gui;
-    
-    import com.jme3.app.SimpleApplication;
-    import com.jme3.font.BitmapFont;
-    import com.jme3.font.BitmapText;
-    import com.jme3.font.LineWrapMode;
-    import com.jme3.font.Rectangle;
-    import com.jme3.input.KeyInput;
-    import com.jme3.input.RawInputListener;
-    import com.jme3.input.controls.ActionListener;
-    import com.jme3.input.controls.KeyTrigger;
-    import com.jme3.input.event.*;
-    
-    public class TestBitmapFont extends SimpleApplication {
-    
-        private String txtB =
-        "ABCDEFGHIKLMNOPQRSTUVWXYZ1234567 890`~!@#$%^&*()-=_+[]\\;',./{}|:<>?";
-    
-        private BitmapText txt;
-        private BitmapText txt2;
-        private BitmapText txt3;
-    
-        public static void main(String[] args){
-            TestBitmapFont app = new TestBitmapFont();
-            app.start();
-        }
-    
-        @Override
-        public void simpleInitApp() {
-            inputManager.addMapping("WordWrap", new KeyTrigger(KeyInput.KEY_TAB));
-            inputManager.addListener(keyListener, "WordWrap");
-            inputManager.addRawInputListener(textListener);
-    
-            BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
-            txt = new BitmapText(fnt, false);
-            txt.setBox(new Rectangle(0, 0, settings.getWidth(), settings.getHeight()));
-            txt.setSize(fnt.getPreferredSize() * 2f);
-            txt.setText(txtB);
-            txt.setLocalTranslation(0, txt.getHeight(), 0);
-            guiNode.attachChild(txt);
-    
-            txt2 = new BitmapText(fnt, false);
-            txt2.setSize(fnt.getPreferredSize() * 1.2f);
-            txt2.setText("Text without restriction. \nText without restriction. Text without restriction. Text without restriction");
-            txt2.setLocalTranslation(0, txt2.getHeight(), 0);
-            guiNode.attachChild(txt2);
-    
-            txt3 = new BitmapText(fnt, false);
-            txt3.setBox(new Rectangle(0, 0, settings.getWidth(), 0));
-            txt3.setText("Press Tab to toggle word-wrap. type text and enter to input text");
-            txt3.setLocalTranslation(0, settings.getHeight()/2, 0);
-            guiNode.attachChild(txt3);
-        }
-    
-        private ActionListener keyListener = new ActionListener() {
-            @Override
-            public void onAction(String name, boolean isPressed, float tpf) {
-                if (name.equals("WordWrap") && !isPressed) {
-                    txt.setLineWrapMode( txt.getLineWrapMode() == LineWrapMode.Word ?
-                                            LineWrapMode.NoWrap : LineWrapMode.Word );
-                }
-            }
-        };
-    
-        private RawInputListener textListener = new RawInputListener() {
-            private StringBuilder str = new StringBuilder();
-    
-            @Override
-            public void onMouseMotionEvent(MouseMotionEvent evt) { }
-    
-            @Override
-            public void onMouseButtonEvent(MouseButtonEvent evt) { }
-    
-            @Override
-            public void onKeyEvent(KeyInputEvent evt) {
-                if (evt.isReleased())
-                    return;
-                if (evt.getKeyChar() == '\n' || evt.getKeyChar() == '\r') {
-                    txt3.setText(str.toString());
-                    str.setLength(0);
-                } else {
-                    str.append(evt.getKeyChar());
-                }
-            }
-    
-            @Override
-            public void onJoyButtonEvent(JoyButtonEvent evt) { }
-    
-            @Override
-            public void onJoyAxisEvent(JoyAxisEvent evt) { }
-    
-            @Override
-            public void endInput() { }
-    
-            @Override
-            public void beginInput() { }
-    
-            @Override
-            public void onTouchEvent(TouchEvent evt) { }
-    
-        };
-    
+```text
+package jme3test.gui;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
+import com.jme3.font.LineWrapMode;
+import com.jme3.font.Rectangle;
+import com.jme3.input.KeyInput;
+import com.jme3.input.RawInputListener;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.event.*;
+
+public class TestBitmapFont extends SimpleApplication {
+
+    private String txtB =
+    "ABCDEFGHIKLMNOPQRSTUVWXYZ1234567 890`~!@#$%^&*()-=_+[]\\;',./{}|:<>?";
+
+    private BitmapText txt;
+    private BitmapText txt2;
+    private BitmapText txt3;
+
+    public static void main(String[] args){
+        TestBitmapFont app = new TestBitmapFont();
+        app.start();
     }
+
+    @Override
+    public void simpleInitApp() {
+        inputManager.addMapping("WordWrap", new KeyTrigger(KeyInput.KEY_TAB));
+        inputManager.addListener(keyListener, "WordWrap");
+        inputManager.addRawInputListener(textListener);
+
+        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        txt = new BitmapText(fnt, false);
+        txt.setBox(new Rectangle(0, 0, settings.getWidth(), settings.getHeight()));
+        txt.setSize(fnt.getPreferredSize() * 2f);
+        txt.setText(txtB);
+        txt.setLocalTranslation(0, txt.getHeight(), 0);
+        guiNode.attachChild(txt);
+
+        txt2 = new BitmapText(fnt, false);
+        txt2.setSize(fnt.getPreferredSize() * 1.2f);
+        txt2.setText("Text without restriction. \nText without restriction. Text without restriction. Text without restriction");
+        txt2.setLocalTranslation(0, txt2.getHeight(), 0);
+        guiNode.attachChild(txt2);
+
+        txt3 = new BitmapText(fnt, false);
+        txt3.setBox(new Rectangle(0, 0, settings.getWidth(), 0));
+        txt3.setText("Press Tab to toggle word-wrap. type text and enter to input text");
+        txt3.setLocalTranslation(0, settings.getHeight()/2, 0);
+        guiNode.attachChild(txt3);
+    }
+
+    private ActionListener keyListener = new ActionListener() {
+        @Override
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if (name.equals("WordWrap") && !isPressed) {
+                txt.setLineWrapMode( txt.getLineWrapMode() == LineWrapMode.Word ?
+                                        LineWrapMode.NoWrap : LineWrapMode.Word );
+            }
+        }
+    };
+
+    private RawInputListener textListener = new RawInputListener() {
+        private StringBuilder str = new StringBuilder();
+
+        @Override
+        public void onMouseMotionEvent(MouseMotionEvent evt) { }
+
+        @Override
+        public void onMouseButtonEvent(MouseButtonEvent evt) { }
+
+        @Override
+        public void onKeyEvent(KeyInputEvent evt) {
+            if (evt.isReleased())
+                return;
+            if (evt.getKeyChar() == '\n' || evt.getKeyChar() == '\r') {
+                txt3.setText(str.toString());
+                str.setLength(0);
+            } else {
+                str.append(evt.getKeyChar());
+            }
+        }
+
+        @Override
+        public void onJoyButtonEvent(JoyButtonEvent evt) { }
+
+        @Override
+        public void onJoyAxisEvent(JoyAxisEvent evt) { }
+
+        @Override
+        public void endInput() { }
+
+        @Override
+        public void beginInput() { }
+
+        @Override
+        public void onTouchEvent(TouchEvent evt) { }
+
+    };
+
+}
+```
 
 效果如下：
 
-![BitmapFont](/content/images/2017/05/BitmapFont.png)
+![BitmapFont](.gitbook/assets/BitmapFont.png)
 
 BitmapText作为一个几何物体，当也可以被添加到rootNode中。如果需要在3D场景中显示文字（例如在怪物头顶显示名称），它同样可以生效。
 
 [jme3test.gui.TestBitmapText3D](https://github.com/jMonkeyEngine/jmonkeyengine/blob/master/jme3-examples/src/main/java/jme3test/gui/TestBitmapText3D.java)
 
-    package jme3test.gui;
-    
-    import com.jme3.app.SimpleApplication;
-    import com.jme3.font.BitmapFont;
-    import com.jme3.font.BitmapText;
-    import com.jme3.font.Rectangle;
-    import com.jme3.renderer.queue.RenderQueue.Bucket;
-    import com.jme3.scene.Geometry;
-    import com.jme3.scene.shape.Quad;
-    
-    public class TestBitmapText3D extends SimpleApplication {
-    
-        private String txtB =
-        "ABCDEFGHIKLMNOPQRSTUVWXYZ1234567890`~!@#$%^&*()-=_+[]\\;',./{}|:<>?";
-    
-        public static void main(String[] args){
-            TestBitmapText3D app = new TestBitmapText3D();
-            app.start();
-        }
-    
-        @Override
-        public void simpleInitApp() {
-            Quad q = new Quad(6, 3);
-            Geometry g = new Geometry("quad", q);
-            g.setLocalTranslation(0, -3, -0.0001f);
-            g.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
-            rootNode.attachChild(g);
-    
-            BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
-            BitmapText txt = new BitmapText(fnt, false);
-            txt.setBox(new Rectangle(0, 0, 6, 3));
-            txt.setQueueBucket(Bucket.Transparent);
-            txt.setSize( 0.5f );
-            txt.setText(txtB);
-            rootNode.attachChild(txt);
-        }
-    
+```text
+package jme3test.gui;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
+import com.jme3.font.Rectangle;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Quad;
+
+public class TestBitmapText3D extends SimpleApplication {
+
+    private String txtB =
+    "ABCDEFGHIKLMNOPQRSTUVWXYZ1234567890`~!@#$%^&*()-=_+[]\\;',./{}|:<>?";
+
+    public static void main(String[] args){
+        TestBitmapText3D app = new TestBitmapText3D();
+        app.start();
     }
+
+    @Override
+    public void simpleInitApp() {
+        Quad q = new Quad(6, 3);
+        Geometry g = new Geometry("quad", q);
+        g.setLocalTranslation(0, -3, -0.0001f);
+        g.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        rootNode.attachChild(g);
+
+        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapText txt = new BitmapText(fnt, false);
+        txt.setBox(new Rectangle(0, 0, 6, 3));
+        txt.setQueueBucket(Bucket.Transparent);
+        txt.setSize( 0.5f );
+        txt.setText(txtB);
+        rootNode.attachChild(txt);
+    }
+
+}
+```
 
 效果如下：
 
-![BitmapFont3D](/content/images/2017/05/BitmapFont3D.png)
+![BitmapFont3D](.gitbook/assets/BitmapFont3D.png)
 
 **总结：**
 
@@ -809,93 +826,94 @@ BitmapFont的缺点也很明显。首先BitmapFont需要专门制作，而且无
 
 #### 使用TTF字体
 
-![jME True Type Font](/content/images/2017/05/jme3_ttf.jpg)
+![jME True Type Font](.gitbook/assets/jme3_ttf.jpg)
 
 TTF（TrueTypeFont）是Apple公司和Microsoft公司共同推出的字体文件格式，是各种操作系统中最常用的一种字体文件表示方式。如果你使用的是Windows操作系统，可以直接在自己的`C:/Windows/Fonts/`文件夹下找到很多内置的字体；也可以在网上下载到诸多个性化的字体。
 
-JME3原本是不支持TTF字体的，不过好在2016年3月份有人为JME3社区贡献了一个TTF字体渲染库：[jME-TrueTypeFont Rendering Library](https://hub.jmonkeyengine.org/t/jme-truetypefont-rendering-library/35395) 
+JME3原本是不支持TTF字体的，不过好在2016年3月份有人为JME3社区贡献了一个TTF字体渲染库：[jME-TrueTypeFont Rendering Library](https://hub.jmonkeyengine.org/t/jme-truetypefont-rendering-library/35395)
 
 [项目地址](http://1337atr.weebly.com/jttf.html)
 
 这个库的用法及其简单，首先把TTF字体添加到你的项目中，然后把jME-TrueTypeFont这个jar也添加到你的项目中。
 
-![工程结构](/content/images/2017/05/ttf_libs.png)
+![&#x5DE5;&#x7A0B;&#x7ED3;&#x6784;](.gitbook/assets/ttf_libs.png)
 
 点击查看项目源码：[True TypeFont Test](https://github.com/jmecn/learnJME3/tree/master/True%20TypeFont%20Test)
 
 接着就可以直接在代码里面用了。
 
-	package net.jmecn.gui;
-	
-	import com.jme3.app.SimpleApplication;
-	import com.jme3.math.ColorRGBA;
-	import com.jme3.scene.Geometry;
-	
-	import truetypefont.TrueTypeFont;
-	import truetypefont.TrueTypeKey;
-	import truetypefont.TrueTypeLoader;
-	
-	/**
-	 * 测试TTF字体
-	 * 
-	 * @author yanmaoyuan
-	 *
-	 */
-	public class HelloTTF extends SimpleApplication {
-	
-		public static void main(String[] args) {
-			// 启动程序
-			HelloTTF app = new HelloTTF();
-			app.start();
-		}
-	
-		// 字形
-		public final static int PLAIN = 0;// 普通
-		public final static int BOLD = 1;// 粗体
-		public final static int ITALIC = 2;// 斜体
-		
-		// 字号
-		public final static int FONT_SIZE = 64;
-		
-		@Override
-		public void simpleInitApp() {
-			// 注册ttf字体资源加载器
-			assetManager.registerLoader(TrueTypeLoader.class, "ttf");
-	
-			// 创建字体 (例如：楷书)
-			TrueTypeKey ttk = new TrueTypeKey("Interface/Fonts/SIMKAI.TTF", // 字体
-					PLAIN, // 字形：0 普通、1 粗体、2 斜体
-					FONT_SIZE);// 字号
-	
-			TrueTypeFont font = (TrueTypeFont) assetManager.loadAsset(ttk);
-	
-			
-			// 在屏幕中央显示一首五言绝句。
-			String[] poem = { "空山新雨后", "天气晚来秋", "明月松间照", "清泉石上流" };
-	
-			// 计算坐标
-			float x = 0.5f * (cam.getWidth() - FONT_SIZE * 5);
-			float y = 0.5f * (cam.getHeight() + FONT_SIZE * 2);
-			
-			for (int i = 0; i < poem.length; i++) {
-				// 创建文字
-				Geometry text = font.getBitmapGeom(poem[i], 0, ColorRGBA.White);
-				text.setLocalTranslation(x, y - i * FONT_SIZE, 0);
-				guiNode.attachChild(text);
-			}
-	
-		}
-	
-	}
+```text
+package net.jmecn.gui;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Geometry;
+
+import truetypefont.TrueTypeFont;
+import truetypefont.TrueTypeKey;
+import truetypefont.TrueTypeLoader;
+
+/**
+ * 测试TTF字体
+ * 
+ * @author yanmaoyuan
+ *
+ */
+public class HelloTTF extends SimpleApplication {
+
+    public static void main(String[] args) {
+        // 启动程序
+        HelloTTF app = new HelloTTF();
+        app.start();
+    }
+
+    // 字形
+    public final static int PLAIN = 0;// 普通
+    public final static int BOLD = 1;// 粗体
+    public final static int ITALIC = 2;// 斜体
+
+    // 字号
+    public final static int FONT_SIZE = 64;
+
+    @Override
+    public void simpleInitApp() {
+        // 注册ttf字体资源加载器
+        assetManager.registerLoader(TrueTypeLoader.class, "ttf");
+
+        // 创建字体 (例如：楷书)
+        TrueTypeKey ttk = new TrueTypeKey("Interface/Fonts/SIMKAI.TTF", // 字体
+                PLAIN, // 字形：0 普通、1 粗体、2 斜体
+                FONT_SIZE);// 字号
+
+        TrueTypeFont font = (TrueTypeFont) assetManager.loadAsset(ttk);
+
+
+        // 在屏幕中央显示一首五言绝句。
+        String[] poem = { "空山新雨后", "天气晚来秋", "明月松间照", "清泉石上流" };
+
+        // 计算坐标
+        float x = 0.5f * (cam.getWidth() - FONT_SIZE * 5);
+        float y = 0.5f * (cam.getHeight() + FONT_SIZE * 2);
+
+        for (int i = 0; i < poem.length; i++) {
+            // 创建文字
+            Geometry text = font.getBitmapGeom(poem[i], 0, ColorRGBA.White);
+            text.setLocalTranslation(x, y - i * FONT_SIZE, 0);
+            guiNode.attachChild(text);
+        }
+
+    }
+
+}
+```
 
 运行效果如下：
 
-![测试TTF字体](/content/images/2017/05/TTF.png)
+![&#x6D4B;&#x8BD5;TTF&#x5B57;&#x4F53;](.gitbook/assets/TTF.png)
 
 优点：字体丰富；理论上支持所有语言；字体大小缩放不影响清晰度。
 
-缺点：这个库对每个字符都生成了一个单独的网格，占用内存比Bitmap
-Font大，而且文字量大的时候会增加多边形的面数。
+缺点：这个库对每个字符都生成了一个单独的网格，占用内存比Bitmap Font大，而且文字量大的时候会增加多边形的面数。
 
 ### 鼠标
 
@@ -905,8 +923,10 @@ Font大，而且文字量大的时候会增加多边形的面数。
 
 通过InputManager的`isCursorVisible()`方法可以查询鼠标的显示状态，通过`setCursorVisible(boolean visible)`方法可以更改其显示状态。
 
-    inputManager.setCursorVisible(true);
-    inputManager.isCursorVisible();
+```text
+inputManager.setCursorVisible(true);
+inputManager.isCursorVisible();
+```
 
 jME3默认是不显示鼠标的，主要原因是jME3提供了一个第一人称摄像机（com.jme3.input.FlyByCamera）。在第一人称射击（FPS）游戏中，鼠标是多余的。当玩家晃动鼠标时，FlyByCamera会敏锐地捕捉到鼠标的输入，并实时改变镜头的朝向。
 
@@ -914,46 +934,52 @@ FlyByCamera在初始化时将鼠标的显示模式设为了false，显示鼠标�
 
 下方是FlyByCamera中的`setEnable`方法的源码。
 
-    /**
-     * @param enable If false, the camera will ignore input.
-     */
-    public void setEnabled(boolean enable){
-        if (enabled && !enable){
-            if (inputManager!= null && (!dragToRotate || (dragToRotate && canRotate))){
-                inputManager.setCursorVisible(true);
-            }
+```text
+/**
+ * @param enable If false, the camera will ignore input.
+ */
+public void setEnabled(boolean enable){
+    if (enabled && !enable){
+        if (inputManager!= null && (!dragToRotate || (dragToRotate && canRotate))){
+            inputManager.setCursorVisible(true);
         }
-        enabled = enable;
     }
+    enabled = enable;
+}
+```
 
 如果不想完全禁用FlyByCamera，则可以通过`flyCam.setDragToRotate(true)`方法将镜头的摆动模式设置为拖拽（drag）。在这种模式下，改变镜头方向需要先按住鼠标的左键或右键，然后再晃动鼠标。当鼠标的按键在释放（release）状态时，镜头是不会自动随鼠标晃动的。
 
 下方是FlyByCamera中的`setDragToRotate`方法的源码。
 
-    /**
-     * Set if drag to rotate mode is enabled.
-     * 
-     * When true, the user must hold the mouse button
-     * and drag over the screen to rotate the camera, and the cursor is
-     * visible until dragged. Otherwise, the cursor is invisible at all times
-     * and holding the mouse button is not needed to rotate the camera.
-     * This feature is disabled by default.
-     * 
-     * @param dragToRotate True if drag to rotate mode is enabled.
-     */
-    public void setDragToRotate(boolean dragToRotate) {
-        this.dragToRotate = dragToRotate;
-        if (inputManager != null) {
-            inputManager.setCursorVisible(dragToRotate);
-        }
+```text
+/**
+ * Set if drag to rotate mode is enabled.
+ * 
+ * When true, the user must hold the mouse button
+ * and drag over the screen to rotate the camera, and the cursor is
+ * visible until dragged. Otherwise, the cursor is invisible at all times
+ * and holding the mouse button is not needed to rotate the camera.
+ * This feature is disabled by default.
+ * 
+ * @param dragToRotate True if drag to rotate mode is enabled.
+ */
+public void setDragToRotate(boolean dragToRotate) {
+    this.dragToRotate = dragToRotate;
+    if (inputManager != null) {
+        inputManager.setCursorVisible(dragToRotate);
     }
+}
+```
 
 #### 改变图标
 
 jME3支持3种格式的图标：cur、ico、ani。如果想要更改鼠标的图标，首先要通过AssetManager加载图标资源，再通过`inputManager.setMouseCursor(JmeCurosr)`方法来应用图标。
 
-    JmeCursor cur = (JmeCursor) assetManager.loadAsset("Textures/Cursors/meme.cur")
-    inputManager.setMouseCursor(cur);
+```text
+JmeCursor cur = (JmeCursor) assetManager.loadAsset("Textures/Cursors/meme.cur")
+inputManager.setMouseCursor(cur);
+```
 
 制作cur、ico、ani等图标文件有些麻烦，如果想直接使用图片作为图标行不行呢？用系统的API当然不可以，但是别忘了我们有障眼法。
 
@@ -967,158 +993,164 @@ jME3支持3种格式的图标：cur、ico、ani。如果想要更改鼠标的图
 
 完整代码如下：
 
-    package net.jmecn.gui;
-    
-    import com.jme3.app.SimpleApplication;
-    import com.jme3.cursors.plugins.JmeCursor;
-    import com.jme3.input.RawInputListener;
-    import com.jme3.input.event.JoyAxisEvent;
-    import com.jme3.input.event.JoyButtonEvent;
-    import com.jme3.input.event.KeyInputEvent;
-    import com.jme3.input.event.MouseButtonEvent;
-    import com.jme3.input.event.MouseMotionEvent;
-    import com.jme3.input.event.TouchEvent;
-    import com.jme3.math.FastMath;
-    import com.jme3.math.Vector3f;
-    import com.jme3.ui.Picture;
-    
-    /**
-     * 障眼法：伪装鼠标
-     * 
-     * @author yanmaoyuan
-     *
-     */
-    public class FakeCursor extends SimpleApplication {
-    
-        public static void main(String[] args) {
-            // 启动程序
-            FakeCursor app = new FakeCursor();
-            app.start();
-        }
-    
-        private Picture cursor;// 伪装鼠标
-        private Vector3f position = new Vector3f();// 鼠标位置
-        private boolean isPressed = false;// 鼠标按键状态
-    
-        // 屏幕分辨率
-        private float width;
-        private float height;
-    
-        @Override
-        public void simpleInitApp() {
-            width = cam.getWidth();
-            height = cam.getHeight();
-    
-            // 改变摄像机摆动方式，显示鼠标。
-            flyCam.setDragToRotate(true);
-    
-            // 隐藏鼠标图标
-            hideCursor();
-    
-            // 创造伪装鼠标
-            cursor = fakeCursor();
-            guiNode.attachChild(cursor);
-    
-            // 注册监听器
-            inputManager.addRawInputListener(inputListener);
-        }
-    
-        /**
-         * 隐藏鼠标图标
-         */
-        private void hideCursor() {
-            // 初始化鼠标
-            // 把鼠标的图片搞成透明的，这样玩家就看不见鼠标了！
-            JmeCursor jmeCursor = (JmeCursor) assetManager.loadAsset("Interface/Gui/Cursor/invisible.cur");
-            inputManager.setMouseCursor(jmeCursor);
-        }
-    
-        /**
-         * 创建一个纸片，伪装成鼠标
-         * 
-         * @return
-         */
-        private Picture fakeCursor() {
-            Picture cursor = new Picture("cur");
-            cursor.setWidth(32);
-            cursor.setHeight(32);
-            cursor.setImage(assetManager, "Interface/Gui/Cursor/MyCursor.tga", true);
-    
-            // 设置鼠标居中
-            position = new Vector3f(width / 2, height / 2 - 32, Float.MAX_VALUE);
-            cursor.setLocalTranslation(position);
-            return cursor;
-        }
-    
-        /**
-         * 光标移动监听器
-         */
-        private RawInputListener inputListener = new RawInputListener() {
-            private float x;
-            private float y;
-    
-            public void onMouseMotionEvent(MouseMotionEvent evt) {
-                if (isPressed)
-                    return;
-                // 获得当前鼠标的坐标
-                x = evt.getX();
-                y = evt.getY();
-    
-                // 处理屏幕边缘
-                x = FastMath.clamp(x, 0, cam.getWidth());
-                y = FastMath.clamp(y, 0, cam.getHeight());
-    
-                position.x = x;
-                position.y = y - 32;
-    
-                // 设置光标位置
-                cursor.setLocalTranslation(position);
-            }
-    
-            public void beginInput() {
-            }
-    
-            public void endInput() {
-            }
-    
-            public void onJoyAxisEvent(JoyAxisEvent evt) {
-            }
-    
-            public void onJoyButtonEvent(JoyButtonEvent evt) {
-            }
-    
-            public void onMouseButtonEvent(MouseButtonEvent evt) {
-                isPressed = evt.isPressed();
-    
-                if (isPressed) {
-                    // 显示鼠标位置
-                    System.out.printf("MousePosition:(%.0f, %.0f)\n", position.x, position.y + 32f);
-                }
-            }
-    
-            public void onKeyEvent(KeyInputEvent evt) {
-            }
-    
-            public void onTouchEvent(TouchEvent evt) {
-            }
-        };
-    
+```text
+package net.jmecn.gui;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.cursors.plugins.JmeCursor;
+import com.jme3.input.RawInputListener;
+import com.jme3.input.event.JoyAxisEvent;
+import com.jme3.input.event.JoyButtonEvent;
+import com.jme3.input.event.KeyInputEvent;
+import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.input.event.MouseMotionEvent;
+import com.jme3.input.event.TouchEvent;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
+import com.jme3.ui.Picture;
+
+/**
+ * 障眼法：伪装鼠标
+ * 
+ * @author yanmaoyuan
+ *
+ */
+public class FakeCursor extends SimpleApplication {
+
+    public static void main(String[] args) {
+        // 启动程序
+        FakeCursor app = new FakeCursor();
+        app.start();
     }
+
+    private Picture cursor;// 伪装鼠标
+    private Vector3f position = new Vector3f();// 鼠标位置
+    private boolean isPressed = false;// 鼠标按键状态
+
+    // 屏幕分辨率
+    private float width;
+    private float height;
+
+    @Override
+    public void simpleInitApp() {
+        width = cam.getWidth();
+        height = cam.getHeight();
+
+        // 改变摄像机摆动方式，显示鼠标。
+        flyCam.setDragToRotate(true);
+
+        // 隐藏鼠标图标
+        hideCursor();
+
+        // 创造伪装鼠标
+        cursor = fakeCursor();
+        guiNode.attachChild(cursor);
+
+        // 注册监听器
+        inputManager.addRawInputListener(inputListener);
+    }
+
+    /**
+     * 隐藏鼠标图标
+     */
+    private void hideCursor() {
+        // 初始化鼠标
+        // 把鼠标的图片搞成透明的，这样玩家就看不见鼠标了！
+        JmeCursor jmeCursor = (JmeCursor) assetManager.loadAsset("Interface/Gui/Cursor/invisible.cur");
+        inputManager.setMouseCursor(jmeCursor);
+    }
+
+    /**
+     * 创建一个纸片，伪装成鼠标
+     * 
+     * @return
+     */
+    private Picture fakeCursor() {
+        Picture cursor = new Picture("cur");
+        cursor.setWidth(32);
+        cursor.setHeight(32);
+        cursor.setImage(assetManager, "Interface/Gui/Cursor/MyCursor.tga", true);
+
+        // 设置鼠标居中
+        position = new Vector3f(width / 2, height / 2 - 32, Float.MAX_VALUE);
+        cursor.setLocalTranslation(position);
+        return cursor;
+    }
+
+    /**
+     * 光标移动监听器
+     */
+    private RawInputListener inputListener = new RawInputListener() {
+        private float x;
+        private float y;
+
+        public void onMouseMotionEvent(MouseMotionEvent evt) {
+            if (isPressed)
+                return;
+            // 获得当前鼠标的坐标
+            x = evt.getX();
+            y = evt.getY();
+
+            // 处理屏幕边缘
+            x = FastMath.clamp(x, 0, cam.getWidth());
+            y = FastMath.clamp(y, 0, cam.getHeight());
+
+            position.x = x;
+            position.y = y - 32;
+
+            // 设置光标位置
+            cursor.setLocalTranslation(position);
+        }
+
+        public void beginInput() {
+        }
+
+        public void endInput() {
+        }
+
+        public void onJoyAxisEvent(JoyAxisEvent evt) {
+        }
+
+        public void onJoyButtonEvent(JoyButtonEvent evt) {
+        }
+
+        public void onMouseButtonEvent(MouseButtonEvent evt) {
+            isPressed = evt.isPressed();
+
+            if (isPressed) {
+                // 显示鼠标位置
+                System.out.printf("MousePosition:(%.0f, %.0f)\n", position.x, position.y + 32f);
+            }
+        }
+
+        public void onKeyEvent(KeyInputEvent evt) {
+        }
+
+        public void onTouchEvent(TouchEvent evt) {
+        }
+    };
+
+}
+```
 
 效果如下：
 
-![FakeCursor](/content/images/2017/05/FakeCursor.png)
+![FakeCursor](.gitbook/assets/FakeCursor.png)
 
 #### 获得鼠标位置
 
 一般情况下，鼠标的位置应该通过InputManager的`getCursorPosition()`方法获取。只要存在鼠标设备，无论鼠标的图标是否显示，都可以通过这个方法得到鼠标在屏幕上的坐标。
 
-    Vector2f pos = inputManager.getCursorPosition();
+```text
+Vector2f pos = inputManager.getCursorPosition();
+```
 
 如果你使用前面提到的伪装鼠标，就可以直接使用position这个变量。它的x、y坐标代表了鼠标在屏幕上的位置。
 
-    // 显示鼠标位置
-    System.out.printf("MousePosition:(%.0f, %.0f)\n", position.x, position.y + 32f);
+```text
+// 显示鼠标位置
+System.out.printf("MousePosition:(%.0f, %.0f)\n", position.x, position.y + 32f);
+```
 
 ## Lemur框架
 
@@ -1143,10 +1175,7 @@ jME3目前没有提供任何传统的GUI控件（例如窗口、按钮、标签�
 
 Lemur（狐猴）是一个为jME3开发的UI工具包，它支持标准的2D用户界面以及3D用户界面。
 
-![Mythruna](http://i.imgur.com/xlhbDgL.png)
-![Mythruna](http://i.imgur.com/5wFF4YY.png)
-![Arboreal](http://i.imgur.com/2O0Ivmq.png)
-![Ethereal](http://i.imgur.com/zrYgDgI.png)
+![Mythruna](http://i.imgur.com/xlhbDgL.png) ![Mythruna](http://i.imgur.com/5wFF4YY.png) ![Arboreal](http://i.imgur.com/2O0Ivmq.png) ![Ethereal](http://i.imgur.com/zrYgDgI.png)
 
 Lemur内部使用模块化设计，它实质上是一些模块的集合，这些模块可以用于创造个性化的GUI库。Lemur允许应用程序根据实际需要来使用它的部分或者全部模块，开发者甚至可以基于Lemur来开发一套全新的GUI库。
 
@@ -1221,7 +1250,7 @@ Lemur依赖下列类库：
 * [Guava](https://github.com/google/guava) 12 或更高版本。
 * [slf4j](http://www.slf4j.org/download.html) 1.7.5 或更高版本。除此之外，你可能还需要一个slf4j到其他日志框架的适配器。
 * jME 3.1 或更高版本。
-* [Groovy](http://www.groovy-lang.org/download.html) 2.1.9 或更高版本。(可选但强烈推荐) Lemur支持使用groovy脚本来定义GUI样式，因此需要groovy类库支持。例如：groovy-all-2.1.9.jar
+* [Groovy](http://www.groovy-lang.org/download.html) 2.1.9 或更高版本。\(可选但强烈推荐\) Lemur支持使用groovy脚本来定义GUI样式，因此需要groovy类库支持。例如：groovy-all-2.1.9.jar
 
 #### 添加Lemur依赖
 
@@ -1235,10 +1264,12 @@ Lemur依赖下列类库：
 
 下面是使用Gradle来添加lemur和lemur-proto依赖的代码：
 
-    dependencies {
-        compile "com.simsilica:lemur:1.10.1"
-        compile "com.simsilica:lemur-proto:1.9.1"
-    }
+```text
+dependencies {
+    compile "com.simsilica:lemur:1.10.1"
+    compile "com.simsilica:lemur-proto:1.9.1"
+}
+```
 
 这里有一份使用build.gradle来管理Lemur依赖的官方样例：[SimEthereal Basic Example](https://github.com/Simsilica/Examples/tree/master/sim-eth-basic)
 
@@ -1250,118 +1281,128 @@ Lemur只需要极少量的初始化工作来设置一些内部的默认值、注
 
 初始化要在jME3程序启动后尽早完成，一般来说这行代码应该写在`simpleInitApp()`方法中。
 
-    @Override
-    public void simpleInitApp() {
+```text
+@Override
+public void simpleInitApp() {
 
-        // 初始化Lemur GUI
-        GuiGlobals.initialize(this);
-    ....
+    // 初始化Lemur GUI
+    GuiGlobals.initialize(this);
+....
+```
 
 #### 初始化样式
 
 Lemur的GUI元素默认是没有任何样式的，按钮（Button）连边框都没有。不过Lemur定义了一套默认的样式，我们可以非常方便地使用它。（或者你也可以参考样式文件的结构来自定义样式）。
 
->注意： Lemur的默认样式是使用groovy脚本定义的，如果要使用这套样式，你需要在项目中包含Groovy类库（即`groovy-all-版本号.jar`）。
+> 注意： Lemur的默认样式是使用groovy脚本定义的，如果要使用这套样式，你需要在项目中包含Groovy类库（即`groovy-all-版本号.jar`）。
 
 Lemur提供的默认样式名为"glass"，它的外观风格看起来像是墨绿色的玻璃。下方的代码演示了如何加载"glass"样式。
 
-    // 加载 'glass' 样式
-    BaseStyles.loadGlassStyle();
+```text
+// 加载 'glass' 样式
+BaseStyles.loadGlassStyle();
+```
 
 下面这行代码会把"glass"样式设置为所有GUI元素的默认样式。
 
-    // 将'glass'设置为GUI默认样式
-    GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+```text
+// 将'glass'设置为GUI默认样式
+GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+```
 
 #### 制作GUI
 
 现在，你终于可以使用Lemur来制作GUI了。下面是一个简单的例子：
 
-		// 创建一个Container作为窗口中其他GUI元素的容器
-		Container myWindow = new Container();
-		guiNode.attachChild(myWindow);
+```text
+    // 创建一个Container作为窗口中其他GUI元素的容器
+    Container myWindow = new Container();
+    guiNode.attachChild(myWindow);
 
-		// 设置窗口在屏幕上的坐标
-		// 注意：Lemur的GUI元素是以控件左上角为原点，向右、向下生成的。
-		// 然而，作为一个Spatial，它在GuiNode中的坐标原点依然是屏幕的左下角。
-		myWindow.setLocalTranslation(300, 300, 0);
+    // 设置窗口在屏幕上的坐标
+    // 注意：Lemur的GUI元素是以控件左上角为原点，向右、向下生成的。
+    // 然而，作为一个Spatial，它在GuiNode中的坐标原点依然是屏幕的左下角。
+    myWindow.setLocalTranslation(300, 300, 0);
 
-		// 添加一个Label控件
-		myWindow.addChild(new Label("Hello, World."));
-		
-		// 添加一个Button控件
-		Button clickMe = myWindow.addChild(new Button("Click Me"));
-		clickMe.addClickCommands(new Command<Button>() {
-			@Override
-			public void execute(Button source) {
-				System.out.println("The world is yours.");
-			}
-		});
+    // 添加一个Label控件
+    myWindow.addChild(new Label("Hello, World."));
+
+    // 添加一个Button控件
+    Button clickMe = myWindow.addChild(new Button("Click Me"));
+    clickMe.addClickCommands(new Command<Button>() {
+        @Override
+        public void execute(Button source) {
+            System.out.println("The world is yours.");
+        }
+    });
+```
 
 运行程序，效果如下：
 
-![Hello Lemur](/content/images/2017/05/HelloLemur.png)
+![Hello Lemur](.gitbook/assets/HelloLemur.png)
 
 完整代码如下：
 
-	package net.jmecn.lemur;
-	
-	import com.jme3.app.SimpleApplication;
-	import com.simsilica.lemur.Button;
-	import com.simsilica.lemur.Command;
-	import com.simsilica.lemur.Container;
-	import com.simsilica.lemur.GuiGlobals;
-	import com.simsilica.lemur.Label;
-	import com.simsilica.lemur.style.BaseStyles;
-	
-	/**
-	 * Lemur GUI
-	 * @author yanmaoyuan
-	 *
-	 */
-	public class HelloLemur extends SimpleApplication {
-	
-		public static void main(String[] args) {
-			// 启动程序
-			HelloLemur app = new HelloLemur();
-			app.start();
-		}
-	
-		@Override
-		public void simpleInitApp() {
-	
-			// 初始化Lemur GUI
-			GuiGlobals.initialize(this);
-	
-			// 加载 'glass' 样式
-			BaseStyles.loadGlassStyle();
-	
-			// 将'glass'设置为GUI默认样式
-			GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
-	
-			// 创建一个Container作为窗口中其他GUI元素的容器
-			Container myWindow = new Container();
-			guiNode.attachChild(myWindow);
-	
-			// 设置窗口在屏幕上的坐标
-			// 注意：Lemur的GUI元素是以控件左上角为原点，向右、向下生成的。
-			// 然而，作为一个Spatial，它在GuiNode中的坐标原点依然是屏幕的左下角。
-			myWindow.setLocalTranslation(300, 300, 0);
-	
-			// 添加一个Label控件
-			myWindow.addChild(new Label("Hello, World."));
-			
-			// 添加一个Button控件
-			Button clickMe = myWindow.addChild(new Button("Click Me"));
-			clickMe.addClickCommands(new Command<Button>() {
-				@Override
-				public void execute(Button source) {
-					System.out.println("The world is yours.");
-				}
-			});
-		}
-	
-	}
+```text
+package net.jmecn.lemur;
+
+import com.jme3.app.SimpleApplication;
+import com.simsilica.lemur.Button;
+import com.simsilica.lemur.Command;
+import com.simsilica.lemur.Container;
+import com.simsilica.lemur.GuiGlobals;
+import com.simsilica.lemur.Label;
+import com.simsilica.lemur.style.BaseStyles;
+
+/**
+ * Lemur GUI
+ * @author yanmaoyuan
+ *
+ */
+public class HelloLemur extends SimpleApplication {
+
+    public static void main(String[] args) {
+        // 启动程序
+        HelloLemur app = new HelloLemur();
+        app.start();
+    }
+
+    @Override
+    public void simpleInitApp() {
+
+        // 初始化Lemur GUI
+        GuiGlobals.initialize(this);
+
+        // 加载 'glass' 样式
+        BaseStyles.loadGlassStyle();
+
+        // 将'glass'设置为GUI默认样式
+        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+
+        // 创建一个Container作为窗口中其他GUI元素的容器
+        Container myWindow = new Container();
+        guiNode.attachChild(myWindow);
+
+        // 设置窗口在屏幕上的坐标
+        // 注意：Lemur的GUI元素是以控件左上角为原点，向右、向下生成的。
+        // 然而，作为一个Spatial，它在GuiNode中的坐标原点依然是屏幕的左下角。
+        myWindow.setLocalTranslation(300, 300, 0);
+
+        // 添加一个Label控件
+        myWindow.addChild(new Label("Hello, World."));
+
+        // 添加一个Button控件
+        Button clickMe = myWindow.addChild(new Button("Click Me"));
+        clickMe.addClickCommands(new Command<Button>() {
+            @Override
+            public void execute(Button source) {
+                System.out.println("The world is yours.");
+            }
+        });
+    }
+
+}
+```
 
 ### Lemur应用
 
@@ -1371,7 +1412,6 @@ Lemur框架中有一些常用的术语，下面列出部分术语，并解释它
 
 * **GUI Element**：GUI元素包括面板（Panel）、按钮（Button）、标签（Label）、滑块（Slider）等，指的是用户眼中的最小物体。它在其他GUI框架中通常被叫做“组件（Component）”或“控件（Control）”。由于在Lemur中“组件（Component）”另有所指，为避免歧义，故称其为GUI元素。有时文档中会简称其为“元素（Element）”。
 * **Component**：组件包括图标（Icon）、文本（Text）、背景（Background）、布局（Layout）、边距（Insets）等，GUI元素通常由多种“组件（Component）”组合而成。
-
 
 #### 官方文档
 
@@ -1398,14 +1438,23 @@ Lemur还非常贴心地提供了大量样例代码供开发者学习。
 * [com.simsilica.lemur.demo.BasicDemo](https://github.com/jMonkeyEngine-Contributions/Lemur/blob/master/src/main/java/com/simsilica/lemur/demo/BasicDemo.java) 这是`lemur.jar`中自带的Demo，演示了Lemur的核心功能。
 * [com.simsilica.lemur.demo.ProtoDemo](https://github.com/jMonkeyEngine-Contributions/Lemur/blob/master/extensions/LemurProto/src/main/java/com/simsilica/lemur/demo/ProtoDemo.java) 这是`lemur-proto.jar`中自带的Demo，演示了一些试验GUI元素的功能。
 * [Demos](https://github.com/jMonkeyEngine-Contributions/Lemur/tree/master/examples/demos/src/main/java/demo) 这个Demo项目演示了一些常用GUI元素的用法。（
+
    MainMenuState 主菜单、
+
    OptionPanelState 对话框、
+
    PopupPanelDemoState 弹出菜单、
+
    TextEntryDemoState 文本框、
+
    FormattedTextEntryDemoState 格式化文本框、
+
    WordWarpDemoState 文字自动换行、
+
    DragAndDropDemoState 拖拽、
+
    ListBoxDemoState 列表框）
+
 * [LemurGems](https://github.com/jMonkeyEngine-Contributions/Lemur/blob/master/examples/LemurGems) 这个Demo项目演示了一些更加复杂的GUI，例如在3D场景中的物体“头上”添加一个“血条”。
 
 #### FAQ
@@ -1414,23 +1463,25 @@ Lemur还非常贴心地提供了大量样例代码供开发者学习。
 
 Lemur使用的是BitmapFont字体，你得把需要在GUI上显示的文字做成BitmapFont，然后再设置给Lemur的样式。
 
-    @Override
-    public void simpleInitApp() {
-	
-        // 初始化Lemur GUI
-        GuiGlobals.initialize(this);
-	
-        // 加载 'glass' 样式
-        BaseStyles.loadGlassStyle();
-	
-        // 将'glass'设置为GUI默认样式
-        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+```text
+@Override
+public void simpleInitApp() {
 
-        // 加载BitmapFont字体
-        BitmapFnt font = GuiGlobals.loadFont("你的字体文件.fnt");
-        // 将这个字体设置为样式中默认字体
-        GuiGlobals.getInstance().getStyles().setDefault(font);
-    ...
+    // 初始化Lemur GUI
+    GuiGlobals.initialize(this);
+
+    // 加载 'glass' 样式
+    BaseStyles.loadGlassStyle();
+
+    // 将'glass'设置为GUI默认样式
+    GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+
+    // 加载BitmapFont字体
+    BitmapFnt font = GuiGlobals.loadFont("你的字体文件.fnt");
+    // 将这个字体设置为样式中默认字体
+    GuiGlobals.getInstance().getStyles().setDefault(font);
+...
+```
 
 **Q2. Lemur能用TTF字体吗？**
 
@@ -1442,11 +1493,13 @@ Lemur使用的是BitmapFont字体，你得把需要在GUI上显示的文字做�
 
 解决方法是在build.gradle中声明不包含这个文件。
 
-    android {
-        packagingOptions {
-        	exclude 'com/simsilica/lemur/style/base/glass-styles.groovy'
-        }
+```text
+android {
+    packagingOptions {
+        exclude 'com/simsilica/lemur/style/base/glass-styles.groovy'
     }
+}
+```
 
 如果你确实需要使用这个样式文件，可以手动删除`lemur.jar`中的这个文件，因为`lemur-proto.jar`中的样式比`lemur.jar`中的更加丰富。
 
@@ -1458,3 +1511,4 @@ Lemur使用的是BitmapFont字体，你得把需要在GUI上显示的文字做�
 * [net.jmecn.gui.HelloTTF](https://github.com/jmecn/jME3Tutorials/blob/master/src/main/java/net/jmecn/gui/HelloTTF.java)
 * [net.jmecn.gui.FakeCursor](https://github.com/jmecn/jME3Tutorials/blob/master/src/main/java/net/jmecn/gui/FakeCursor.java)
 * [net.jmecn.lemur.HelloLemur](https://github.com/jmecn/jME3Tutorials/blob/master/src/main/java/net/jmecn/lemur/HelloLemur.java)
+

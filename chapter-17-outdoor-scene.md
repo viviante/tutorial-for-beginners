@@ -8,21 +8,21 @@
 
 如果在玩家头顶上放置一个平面，再把云朵、太阳、星星、月亮等图片“贴”上去，就可以混合成类似下面的效果。
 
-![Sky](/content/images/2017/06/Sky-1.png)
+![Sky](.gitbook/assets/Sky-1.png)
 
 这种技术称为**“天空面（SkyPlane）”**。
 
 显然，这种方法是很容易露馅的。当玩家的视野足够远时，就会发现天空的“边缘”。
 
-![Sky's edge](/content/images/2017/06/SkyEdge.png)
+![Sky&apos;s edge](.gitbook/assets/SkyEdge.png)
 
 稍微改进一下这个障眼法，可以试图让“天空面”始终遮挡在摄像机的前方，或者在远处用高山挡住玩家的视线，这样玩家就没有机会看到边缘。
 
-![](/content/images/2017/06/sky_scroll_1.png)
+![](.gitbook/assets/sky_scroll_1.png)
 
 但是，也不过是另一种骗局。
 
-![](/content/images/2017/06/sky_scroll_2.png)
+![](.gitbook/assets/sky_scroll_2.png)
 
 ### 环境贴图
 
@@ -30,7 +30,7 @@
 
 使用立方体环境贴图时，这种技术也被称为“**天空盒（SkyBox）**”。使用球体环境贴图时，则叫**“天空穹（SkyDome）”**。
 
-![SkyDome](/content/images/2017/06/sphere.png)
+![SkyDome](.gitbook/assets/sphere%20%281%29.png)
 
 这种障眼法的破绽依然很明显。第一，环境贴图是静止的，这于我们的常识不符；其二，一切看起来都是扁平的，而云应该有体积。
 
@@ -40,7 +40,7 @@
 
 下图是网游“天涯明月刀”的画面截图。
 
-![](/content/images/2017/06/hangzhou-6.jpg)
+![](.gitbook/assets/hangzhou-6.jpg)
 
 游戏开发者对画面真实性的追求是无止境的，而机器的性能是有限的。你尽可以在游戏中使用动态天气，但这意味着能用到烘焙阴影的地方会大量减少。如何在机器性能与画面真实性之间进行取舍，如何压榨出设备的每一分性能，是对开发者最大的考验。
 
@@ -64,21 +64,25 @@ jME3提供了 `com.jme3.util.SkyFactory` 类，使开发者可以对**环境贴�
 
 对于这三种不同类型的环境贴图，SkyFactory使用枚举类型`SkyFactory.EnvMapType` 来表示：
 
-    public enum EnvMapType{
-        CubeMap,
-        SphereMap,
-        EquirectMap
-    }
+```text
+public enum EnvMapType{
+    CubeMap,
+    SphereMap,
+    EquirectMap
+}
+```
 
 举个例子，假设要使用立方体贴图来创建天空盒，用法是这样的：
 
-    @Override
-    public void simpleInitApp() {
-        Spatial sky = SkyFactory.createSky(assetManager,
-                "Textures/Sky/Bright/BrightSky.dds", // 贴图路径
-                SkyFactory.EvnMapType.CubeMap);// 贴图类型
-        rootNode.attachChild(sky);
-    }
+```text
+@Override
+public void simpleInitApp() {
+    Spatial sky = SkyFactory.createSky(assetManager,
+            "Textures/Sky/Bright/BrightSky.dds", // 贴图路径
+            SkyFactory.EvnMapType.CubeMap);// 贴图类型
+    rootNode.attachChild(sky);
+}
+```
 
 调用 `createSky()` 方法时，SkyFactory 会完成下列工作
 
@@ -96,18 +100,24 @@ jME3提供了 `com.jme3.util.SkyFactory` 类，使开发者可以对**环境贴�
 
 SkyFactory中提供了多个重载的 `createSky()` 方法，其中之一是使用加载好的 Texture 来代替图片路径。
 
-    createSky(AssetManager, Texture, EnvMapType);
+```text
+createSky(AssetManager, Texture, EnvMapType);
+```
 
 有时我们在程序中加载未知来源的环境贴图，可能会出现上下颠倒、左右颠倒等情况。为此，SkyFactory中提供了createSky的重载方法，可以使用一个 Vector3f 变量来对 X/Y/Z轴进行翻转。
 
-    createSky(AssetManager, Texture, Vectorf, EnvMapType);
+```text
+createSky(AssetManager, Texture, Vectorf, EnvMapType);
+```
 
 例如我想把天空盒的贴图上下颠倒，即按Y轴对称翻转，就可以这么做：
 
-    Spatial sky = SkyFactory.createSky(assetManager,
-            assetManager.loadTexture("Textures/Sky/St Peters/StPeters.hdr"),
-            new Vectorf(1, -1, 1),// 按Y轴对称翻转
-            EnvMapType.SphereMap);
+```text
+Spatial sky = SkyFactory.createSky(assetManager,
+        assetManager.loadTexture("Textures/Sky/St Peters/StPeters.hdr"),
+        new Vectorf(1, -1, 1),// 按Y轴对称翻转
+        EnvMapType.SphereMap);
+```
 
 **如何制作环境贴图？**
 
@@ -125,83 +135,87 @@ SkyFactory中提供了多个重载的 `createSky()` 方法，其中之一是使�
 
 圣彼得大教堂
 
-![StPeters](/content/images/2017/06/StPeters.jpg)
+![StPeters](.gitbook/assets/StPeters.jpg)
 
 平原
 
-![](/content/images/2017/06/SphereMap.jpg)
+![](.gitbook/assets/SphereMap.jpg)
 
 通常在场景建模中，朝向z轴正方向，利用正交投影模拟无穷远处进行渲染，就可以得到这个纹理图。
 
+```text
+public void simpleInitApp() {
+    // 天球，圣彼得大教堂
+    Texture texture = assetManager.loadTexture("Textures/Sky/St Peters/StPeters.hdr");
 
-    public void simpleInitApp() {
-        // 天球，圣彼得大教堂
-        Texture texture = assetManager.loadTexture("Textures/Sky/St Peters/StPeters.hdr");
+    Spatial sky = SkyFactory.createSky(assetManager, texture,
+            new Vector3f(1, -1, 1), // 图片上下颠倒，故改变Y方向的法线
+            SkyFactory.EnvMapType.SphereMap);
 
-        Spatial sky = SkyFactory.createSky(assetManager, texture,
-                new Vector3f(1, -1, 1), // 图片上下颠倒，故改变Y方向的法线
-                SkyFactory.EnvMapType.SphereMap);
-
-        rootNode.attachChild(sky);
-    }
+    rootNode.attachChild(sky);
+}
+```
 
 效果：
 
-![](/content/images/2017/06/stpeters_result.png)
+![](.gitbook/assets/stpeters_result.png)
 
-![](/content/images/2017/06/sphere_result.png)
+![](.gitbook/assets/sphere_result.png)
 
 SphereMap出现的时间比较早，它有一个很大的破绽，就在摄像机的背后。对于那些制作得不够精细的贴图，边缘汇聚在一起的痕迹会非常重。
 
-![](/content/images/2017/06/sphere_result_bug.png)
+![](.gitbook/assets/sphere_result_bug.png)
 
 #### CubeMap
 
 **立方体贴图**的做法比较简单：把摄像机置于场景中央，朝着x，-x，y，-y，z，-z方向将场景渲染出6张纹理。然后用6张纹理组成一个立方体的6个面。这样一个真正的全景图组成了。
 
-![Lagoon](/content/images/2017/06/Lagoon.jpg)
+![Lagoon](.gitbook/assets/Lagoon.jpg)
 
 对于那些制作得不够好的CubeMap，破绽在于面与面的接缝处。
 
 这6个面的排列顺序是一个很有趣的问题，在OpenGL和Dirext3D中，加载同样的天空盒会出现上下颠倒的情况。你可以从这篇文章了解更多内容：[OpenGL和D3D中Cubemap的图象方向问题 ](http://blog.csdn.net/nhsoft/article/details/1398630)
 
-![](/content/images/2017/06/Cube_map.png)
+![](.gitbook/assets/Cube_map.png)
 
 实际加载CubeMap时，有两种截然不同的方式。不过这两种方式只是图片格式不同，效果并没有什么区别。
 
-![](/content/images/2017/06/cube_map_result.png)
+![](.gitbook/assets/cube_map_result.png)
 
-**Texture * 6**
+**Texture \* 6**
 
 比较常见的情况是，CubeMap并不是一张贴图，而是由6张贴图组成。有时甚至只有5个面，因为可能不需要底部的贴图。
 
+```text
+public void simpleInitApp() {
+    Texture west = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_west.jpg");
+    Texture east = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_east.jpg");
+    Texture north = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_north.jpg");
+    Texture south = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_south.jpg");
+    Texture up = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_up.jpg");
+    Texture down = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_down.jpg");
 
-    public void simpleInitApp() {
-        Texture west = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_west.jpg");
-        Texture east = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_east.jpg");
-        Texture north = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_north.jpg");
-        Texture south = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_south.jpg");
-        Texture up = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_up.jpg");
-        Texture down = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_down.jpg");
-
-        Spatial sky = SkyFactory.createSky(assetManager, west, east, north, south, up, down);
-        rootNode.attachChild(sky);
-    }
+    Spatial sky = SkyFactory.createSky(assetManager, west, east, north, south, up, down);
+    rootNode.attachChild(sky);
+}
+```
 
 **TextureCubeMap**
 
 另一种情况是使用特殊格式，在一个文件里同时保存了6个图层，用一个贴图文件来代表整个立方体贴图，常见于微软的dds格式。
 
-    public void simpleInitApp() {
-        TextureKey key = new TextureKey("Textures/Sky/Bright/BrightSky.dds", true);
-        key.setGenerateMips(false);
-        key.setTextureTypeHint(Texture.Type.CubeMap);
-        Texture tex = assetManager.loadTexture(key);
+```text
+public void simpleInitApp() {
+    TextureKey key = new TextureKey("Textures/Sky/Bright/BrightSky.dds", true);
+    key.setGenerateMips(false);
+    key.setTextureTypeHint(Texture.Type.CubeMap);
+    Texture tex = assetManager.loadTexture(key);
 
-        // 天空盒
-        Spatial sky = SkyFactory.createSky(assetManager, tex, SkyFactory.EnvMapType.CubeMap);
-        rootNode.attachChild(sky);
-    }
+    // 天空盒
+    Spatial sky = SkyFactory.createSky(assetManager, tex, SkyFactory.EnvMapType.CubeMap);
+    rootNode.attachChild(sky);
+}
+```
 
 #### EquirectMap
 
@@ -209,34 +223,36 @@ SphereMap出现的时间比较早，它有一个很大的破绽，就在摄像�
 
 其特性是：保持经距和纬距相等，经纬线成正方形网格；沿经线方向无长度变形；角度和面积等变形线与纬线平行，变形值由赤道向高纬逐渐增大。该投影适合于低纬地区制图 。
 
-![](/content/images/2017/06/cylindrical.gif)
+![](.gitbook/assets/cylindrical.gif)
 
 实际应用中，最常见的就是地图。
 
-![](/content/images/2017/06/earth.jpg)
+![](.gitbook/assets/earth.jpg)
 
 还有全景实景展示：
 
-![](/content/images/2017/06/path.jpg)
+![](.gitbook/assets/path.jpg)
 
-![](/content/images/2017/06/SkyEquirectMap.jpg)
+![](.gitbook/assets/SkyEquirectMap.jpg)
 
 代码：
 
-    public void simpleInitApp() {
-        // 天空盒
-        Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/SkyEquirectMap.jpg", SkyFactory.EnvMapType.EquirectMap);
-    }
+```text
+public void simpleInitApp() {
+    // 天空盒
+    Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/SkyEquirectMap.jpg", SkyFactory.EnvMapType.EquirectMap);
+}
+```
 
 效果：
 
-![](/content/images/2017/06/earth_result.png)
+![](.gitbook/assets/earth_result.png)
 
-![](/content/images/2017/06/path_result-1.png)
+![](.gitbook/assets/path_result-1.png)
 
 这种贴图的破绽在于头顶和脚底，即纬度最高处。那些制作得不够精细的贴图，在这两个点会有明显的“汇聚感”。
 
-![](/content/images/2017/06/equirect_result_bug.png)
+![](.gitbook/assets/equirect_result_bug.png)
 
 ## 水面
 
@@ -244,21 +260,21 @@ SphereMap出现的时间比较早，它有一个很大的破绽，就在摄像�
 
 水面的制作方式也有很多种，最简单的莫过于采用纹理贴图。
 
-![波纹](/content/images/2017/06/op.jpg)
+![&#x6CE2;&#x7EB9;](.gitbook/assets/op.jpg)
 
 如果嫌弃静态的水面，可以准备多张纹理贴图，使用帧动画让水面看起来是流动的。
 
-![](/content/images/2017/06/many_water.png)
+![](.gitbook/assets/many_water.png)
 
 当然，也可以使用着色器技术，通过俗称“滚UV”的方式让一张图片看起来是流动的。
 
-![](/content/images/2017/06/water.gif)
+![](.gitbook/assets/water.gif)
 
 ### 水面反射
 
 更复杂一些的做法，是制作一个平面来代表水面，然后用着色器再其表面绘制场景的反射贴图。另外，还可以利用算法让平面波动起来，这样显得更加真实。
 
-![](/content/images/2017/06/simplewater.png)
+![](.gitbook/assets/simplewater.png)
 
 jME3的 [SimpleWaterProcessor](https://github.com/jMonkeyEngine/jmonkeyengine/blob/master/jme3-effects/src/main/java/com/jme3/water/SimpleWaterProcessor.java) 就是基于这个原理实现的。
 
@@ -275,7 +291,7 @@ jME3的 [SimpleWaterProcessor](https://github.com/jMonkeyEngine/jmonkeyengine/bl
 
 在jME3中，[WaterFilter](https://github.com/jMonkeyEngine/jmonkeyengine/blob/master/jme3-effects/src/main/java/com/jme3/water/WaterFilter.java) 用于模拟真实的水体，它是一种后期特效。其核心算法与 SimpleWaterFilter 类似，也是实时计算水面反射。除此之外，当玩家把摄像机移到水面以下时，还能够实现水下的特效。
 
-![水下](/content/images/2017/06/under_water.png)
+![&#x6C34;&#x4E0B;](.gitbook/assets/under_water.png)
 
 WaterFilter 须配合 FilterPostProcessor 一起使用。关于它的用法，我们在“第十四章：特效”中有所介绍，这里就不再赘述了。
 
@@ -291,7 +307,7 @@ WaterFilter 须配合 FilterPostProcessor 一起使用。关于它的用法，�
 
 制作3D游戏时，可以使用建模工具来雕刻大型的游戏地图。这样做能够获得非常精细的地图模型，而且创作自由度也非常高，缺陷是渲染速度较慢。
 
-![3D terrain model](/content/images/2017/06/terrain_model.png)
+![3D terrain model](.gitbook/assets/terrain_model.png)
 
 在实际开发中，经常使用**高度图（Height map）**来创建能够快速渲染的地形。再结合着色器实现“抛雪球算法（Texture Splatting）”算法，能够使用少量纹理贴图，绘制出效果不错的地形。
 
@@ -301,23 +317,25 @@ WaterFilter 须配合 FilterPostProcessor 一起使用。关于它的用法，�
 
 下面两幅图分别为等高线图与高度图：
 
-![等高线图](/content/images/2017/06/isoheight.png)
+![&#x7B49;&#x9AD8;&#x7EBF;&#x56FE;](.gitbook/assets/isoheight.png)
 
 在高度图中，图像的每个象素存储了对应的高度值，取值范围为0~255。
 
-![高度图](/content/images/2017/06/heightmap.png)
+![&#x9AD8;&#x5EA6;&#x56FE;](.gitbook/assets/heightmap.png)
 
-根据图像每个象素的(x, y)坐标，以及高度值height，就可以获得3D空间中的顶点。把这些顶点连接成网格，就可以生成3D模型。
+根据图像每个象素的\(x, y\)坐标，以及高度值height，就可以获得3D空间中的顶点。把这些顶点连接成网格，就可以生成3D模型。
 
-    Vector3f position = new Vector3f(x, height, -y);
+```text
+Vector3f position = new Vector3f(x, height, -y);
+```
 
 下面3个截图就是用过一副高度图生成的3D地形。这个算法的实现并不复杂，如果你感兴趣，可以读读这个测试类：[TestHeightmap.java](https://github.com/jmecn/jME3Tutorials/blob/master/src/main/java/net/jmecn/outscene/TestHeightmap.java)。
 
-![地形，点云模式](/content/images/2017/06/point_clouds.png)
+![&#x5730;&#x5F62;&#xFF0C;&#x70B9;&#x4E91;&#x6A21;&#x5F0F;](.gitbook/assets/point_clouds.png)
 
-![地形，线框模式](/content/images/2017/06/terrain_tri_mesh.png)
+![&#x5730;&#x5F62;&#xFF0C;&#x7EBF;&#x6846;&#x6A21;&#x5F0F;](.gitbook/assets/terrain_tri_mesh.png)
 
-![地形，着色模式](/content/images/2017/06/terrain_shade_model.png)
+![&#x5730;&#x5F62;&#xFF0C;&#x7740;&#x8272;&#x6A21;&#x5F0F;](.gitbook/assets/terrain_shade_model.png)
 
 #### 制作高度图
 
@@ -331,13 +349,13 @@ WaterFilter 须配合 FilterPostProcessor 一起使用。关于它的用法，�
 * [LCS](http://www.lilchips.com/index.htm) LCS游戏开发工具箱
 * [http://terrain.party](http://terrain.party/) 一个可以把真实地图导出成高度图的网站。
 
-目前我最喜欢 EarthSculptor。它的界面和功能都不复杂，很容易上手。免费版只能生成257*257分辨率的高度图，但也足够新手使用了。
+目前我最喜欢 EarthSculptor。它的界面和功能都不复杂，很容易上手。免费版只能生成257\*257分辨率的高度图，但也足够新手使用了。
 
 下面是它的主界面：
 
-![](/content/images/2017/06/terra_mesh.png)
+![](.gitbook/assets/terra_mesh.png)
 
-![](/content/images/2017/06/terra_color.png)
+![](.gitbook/assets/terra_color.png)
 
 本文使用的高度图均由 EarthSculptor 生成。下载 EarthSculptor 后，你可以在Maps目录、Textures目录中找到一些默认的资源图片。我已经把高度图添加到了工程的资源目录中：[Secenes/Maps/DefaultMap](https://github.com/jmecn/jME3Tutorials/tree/master/src/main/resources/Scenes/Maps/DefaultMap)。
 
@@ -349,10 +367,12 @@ jME3内置了对高度图的支持，并提供了很多优化功能。想使用�
 
 Gradle
 
-    dependencies {
-        // 添加jme3地形模块的依赖库
-        compile 'org.jmonkeyengine:jme3-terrain:3.1.0-stable'
-    }
+```text
+dependencies {
+    // 添加jme3地形模块的依赖库
+    compile 'org.jmonkeyengine:jme3-terrain:3.1.0-stable'
+}
+```
 
 在jMonkeyEngine SDK中，需要把 `jme3-terrain.jar` 添加到项目依赖。
 
@@ -371,7 +391,7 @@ Gradle
 * **根据高度数据生成3D地形**。通过 `AbstractHeightMap` 来定义统一的高度图接口，既可以使用 `ImageBasedHeightMap` 来加载图像数据，也可以通过一些算法来随机生成高度数据。
 * **基于GeoMipMapping算法的层次细节（LOD）技术。**这种技术可以根据顶点到摄像机的距离来动态改变层次细节。离摄像机越近，细节越清晰；离摄像机越远，看起来越简化。
 
-![](/content/images/2017/06/terrain-lod-high-medium-low.png)
+![](.gitbook/assets/terrain-lod-high-medium-low.png)
 
 * **四叉树（Quad Tree）网格优化**。整个地形的网格由多个地形区块（TerrainPatch）组成，并归于地形四叉树（TerrainQuad）统一管理。这些区块存储了实际的网格数据，可以支持层次细节、加速视锥裁剪等优化功能。
 * **Texture Splatting渲染**。这是一种基于着色器的多重纹理渲染技术，jME3最大支持16张不同的纹理。
@@ -389,17 +409,21 @@ jME3官方教程中提供了很多使用Terrain的例子，诸如：
 
 **第一步：使用 `AssetManager` 加载高度图。**
 
-        // 加载高度图
-        Texture heightMapImage = assetManager.loadTexture("Scenes/Maps/DefaultMap/default.png");
+```text
+    // 加载高度图
+    Texture heightMapImage = assetManager.loadTexture("Scenes/Maps/DefaultMap/default.png");
+```
 
 **第二步：根据图像生成高度数据。**
 
-`ImageBasedHeightMap` 的功能是解析图像数据，根据每个像素的灰度值来计算高度值。依次调用 `load()` 方法和 `getHeightMap()` 方法，可以得到一个 float[] 数组，其中存储了地图高度数据。
+`ImageBasedHeightMap` 的功能是解析图像数据，根据每个像素的灰度值来计算高度值。依次调用 `load()` 方法和 `getHeightMap()` 方法，可以得到一个 float\[\] 数组，其中存储了地图高度数据。
 
-        // 根据图像内容，生成高度数据
-        ImageBasedHeightMap heightMap = new ImageBasedHeightMap(heightMapImage.getImage(), 1f);
-        heightMap.load();
-        float[] heightData = heightMap.getHeightMap();
+```text
+    // 根据图像内容，生成高度数据
+    ImageBasedHeightMap heightMap = new ImageBasedHeightMap(heightMapImage.getImage(), 1f);
+    heightMap.load();
+    float[] heightData = heightMap.getHeightMap();
+```
 
 **第三步：使用 `TerrainQuad`，根据高度数据生成3D地形。**
 
@@ -410,24 +434,28 @@ jME3官方教程中提供了很多使用Terrain的例子，诸如：
 * String name, 地形的名称。
 * int patchSize, 区块的大小。若区块大小为 64x64，则取值为 65。
 * int totalSize, 高度图的分辨率。对于分辨率为 257x257 的高度图，取值为 257。
-* float[] heightMap, 地形的高度数据。数组的长度应该为 totalSize x totalSize。
+* float\[\] heightMap, 地形的高度数据。数组的长度应该为 totalSize x totalSize。
 
 注意，TerrainQuad 是 Spatial 的子类，需要添加到场景图中方可显示。
 
-        // 根据高度图生成3D地形。
-        // 该地形被分解成边长65(64*64)的矩形区块，用于优化网格。
-        // 高度图的边长为 257，分辨率 256*256。
-        TerrainQuad terrain = new TerrainQuad("heightmap", 65, 257, heightData);
-        rootNode.attachChild(terrain);
+```text
+    // 根据高度图生成3D地形。
+    // 该地形被分解成边长65(64*64)的矩形区块，用于优化网格。
+    // 高度图的边长为 257，分辨率 256*256。
+    TerrainQuad terrain = new TerrainQuad("heightmap", 65, 257, heightData);
+    rootNode.attachChild(terrain);
+```
 
 **第四步：设置材质，用于渲染地形。**
 
 TerrainQuad 是 Spatial 的子类，可以根据需要来给它设置材质，哪怕是 Unshaded.j3md都可以。
 
-        // 加载材质
-        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        material.getAdditionalRenderState().setWireframe(true);
-        terrain.setMaterial(material);
+```text
+    // 加载材质
+    Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    material.getAdditionalRenderState().setWireframe(true);
+    terrain.setMaterial(material);
+```
 
 实际开发时，地形一般使用多重纹理渲染，这样起来比较美观。`jme3-terrain` 模块中包含了一些地形专用材质，诸如：
 
@@ -441,6 +469,61 @@ TerrainQuad 是 Spatial 的子类，可以根据需要来给它设置材质，�
 
 `TerrainLodControl` 的作用是控制地形网格的层次细节（LOD）。创建 TerrainLodControl 时需要指定 Terrain 和 Camera 对象，因为它需要根据摄像机到地形的的距离来控制LOD。改变LOD的距离由 `LodCalculator` 来计算，默认的LOD计算器为 `DistanceLodCalculator`。
 
+```text
+    // 层次细节（LOD）优化
+    TerrainLodControl lodControl = new TerrainLodControl(terrain, cam);
+    // LOD计算器，一个参数代表区块大小，第二个参数代表距离系数。
+    // size = 65, multiplier = 2.7f, distance = 65 * 2.7f
+    lodControl.setLodCalculator(new DistanceLodCalculator(65, 2.7f));
+
+    terrain.addControl(lodControl);
+```
+
+**完整代码**如下：
+
+```text
+package net.jmecn.outscene;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.material.Material;
+import com.jme3.terrain.geomipmap.TerrainLodControl;
+import com.jme3.terrain.geomipmap.TerrainQuad;
+import com.jme3.terrain.geomipmap.lodcalc.DistanceLodCalculator;
+import com.jme3.terrain.heightmap.ImageBasedHeightMap;
+import com.jme3.texture.Texture;
+
+/**
+ * 演示加载高度图
+ *
+ * @author yanmaoyuan
+ *
+ */
+public class TestTerrain extends SimpleApplication {
+
+    @Override
+    public void simpleInitApp() {
+        flyCam.setMoveSpeed(100);
+
+        // 加载高度图
+        Texture heightMapImage = assetManager.loadTexture("Scenes/Maps/DefaultMap/default.png");
+
+        // 根据图像内容，生成高度数据
+        ImageBasedHeightMap heightMap = new ImageBasedHeightMap(heightMapImage.getImage(), 1f);
+        heightMap.load();
+        float[] heightData = heightMap.getHeightMap();
+
+        // 根据高度图生成3D地形。
+        // 该地形被分解成边长65(64*64)的矩形区块，用于优化网格。
+        // 高度图的边长为 257，分辨率 256*256。
+        TerrainQuad terrain = new TerrainQuad("heightmap", 65, 257, heightData);
+        rootNode.attachChild(terrain);
+        terrain.center();
+
+        // 加载材质
+        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        material.getAdditionalRenderState().setWireframe(true);
+        terrain.setMaterial(material);
+
         // 层次细节（LOD）优化
         TerrainLodControl lodControl = new TerrainLodControl(terrain, cam);
         // LOD计算器，一个参数代表区块大小，第二个参数代表距离系数。
@@ -448,71 +531,19 @@ TerrainQuad 是 Spatial 的子类，可以根据需要来给它设置材质，�
         lodControl.setLodCalculator(new DistanceLodCalculator(65, 2.7f));
 
         terrain.addControl(lodControl);
-
-
-**完整代码**如下：
-
-    package net.jmecn.outscene;
-
-    import com.jme3.app.SimpleApplication;
-    import com.jme3.material.Material;
-    import com.jme3.terrain.geomipmap.TerrainLodControl;
-    import com.jme3.terrain.geomipmap.TerrainQuad;
-    import com.jme3.terrain.geomipmap.lodcalc.DistanceLodCalculator;
-    import com.jme3.terrain.heightmap.ImageBasedHeightMap;
-    import com.jme3.texture.Texture;
-
-    /**
-     * 演示加载高度图
-     *
-     * @author yanmaoyuan
-     *
-     */
-    public class TestTerrain extends SimpleApplication {
-
-        @Override
-        public void simpleInitApp() {
-            flyCam.setMoveSpeed(100);
-
-            // 加载高度图
-            Texture heightMapImage = assetManager.loadTexture("Scenes/Maps/DefaultMap/default.png");
-
-            // 根据图像内容，生成高度数据
-            ImageBasedHeightMap heightMap = new ImageBasedHeightMap(heightMapImage.getImage(), 1f);
-            heightMap.load();
-            float[] heightData = heightMap.getHeightMap();
-
-            // 根据高度图生成3D地形。
-            // 该地形被分解成边长65(64*64)的矩形区块，用于优化网格。
-            // 高度图的边长为 257，分辨率 256*256。
-            TerrainQuad terrain = new TerrainQuad("heightmap", 65, 257, heightData);
-            rootNode.attachChild(terrain);
-            terrain.center();
-
-            // 加载材质
-            Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            material.getAdditionalRenderState().setWireframe(true);
-            terrain.setMaterial(material);
-
-            // 层次细节（LOD）优化
-            TerrainLodControl lodControl = new TerrainLodControl(terrain, cam);
-            // LOD计算器，一个参数代表区块大小，第二个参数代表距离系数。
-            // size = 65, multiplier = 2.7f, distance = 65 * 2.7f
-            lodControl.setLodCalculator(new DistanceLodCalculator(65, 2.7f));
-
-            terrain.addControl(lodControl);
-        }
-
-        public static void main(String[] args) {
-            TestTerrain app = new TestTerrain();
-            app.start();
-        }
-
     }
+
+    public static void main(String[] args) {
+        TestTerrain app = new TestTerrain();
+        app.start();
+    }
+
+}
+```
 
 运行结果是这样的：
 
-![地形，线框模式](/content/images/2017/06/terrain_tri_mesh.png)
+![&#x5730;&#x5F62;&#xFF0C;&#x7EBF;&#x6846;&#x6A21;&#x5F0F;](.gitbook/assets/terrain_tri_mesh%20%281%29.png)
 
 ### 地形渲染
 
@@ -528,49 +559,52 @@ TerrainQuad 是 Spatial 的子类，可以根据需要来给它设置材质，�
 
 **ColorMap**
 
-相比于一般的3D模型来说，使用高度图生成的地形跟容易着色。
-因为地形一定是矩形的，只要画好对应的彩色贴图（ColorMap）就可以了。
+相比于一般的3D模型来说，使用高度图生成的地形跟容易着色。 因为地形一定是矩形的，只要画好对应的彩色贴图（ColorMap）就可以了。
 
 例如，使用 `Unshaded.j3md`设置下面的 ColorMap：
 
-![default_c](/content/images/2017/06/default_c.png)
+![default\_c](.gitbook/assets/default_c.png)
 
 代码：
 
-        // 加载材质
-        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+```text
+    // 加载材质
+    Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
-        Texture colorMap = assetManager.loadTexture("Scenes/Maps/DefaultMap/default_c.png");
-        material.setTexture("ColorMap", colorMap);
+    Texture colorMap = assetManager.loadTexture("Scenes/Maps/DefaultMap/default_c.png");
+    material.setTexture("ColorMap", colorMap);
 
-        terrain.setMaterial(material);
+    terrain.setMaterial(material);
+```
 
 结果：
 
-![ColorMap](/content/images/2017/06/terrain_unshaded_color_map.png)
+![ColorMap](.gitbook/assets/terrain_unshaded_color_map.png)
 
 **LightMap**
 
 还可以把光影烘焙成亮度图（LightMap），这样能够节省计算光影的开销，更适合手游。
 
-![default_l](/content/images/2017/06/default_l.png)
+![default\_l](.gitbook/assets/default_l.png)
 
 代码：
 
-        // 加载材质
-        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+```text
+    // 加载材质
+    Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
-        Texture colorMap = assetManager.loadTexture("Scenes/Maps/DefaultMap/default_c.png");
-        material.setTexture("ColorMap", colorMap);
+    Texture colorMap = assetManager.loadTexture("Scenes/Maps/DefaultMap/default_c.png");
+    material.setTexture("ColorMap", colorMap);
 
-        Texture lightMap = assetManager.loadTexture("Scenes/Maps/DefaultMap/default_l.png");
-        material.setTexture("LightMap", lightMap);
+    Texture lightMap = assetManager.loadTexture("Scenes/Maps/DefaultMap/default_l.png");
+    material.setTexture("LightMap", lightMap);
 
-        terrain.setMaterial(material);
+    terrain.setMaterial(material);
+```
 
 结果：
 
-![LightMap](/content/images/2017/06/terrain_unshaded_light_map.png)
+![LightMap](.gitbook/assets/terrain_unshaded_light_map.png)
 
 **其他？**
 
@@ -578,23 +612,26 @@ TerrainQuad 是 Spatial 的子类，可以根据需要来给它设置材质，�
 
 总的来说，这种渲染方式与普通的3D模型并没有什么区别。
 
-**default_unshaded.j3m**
+**default\_unshaded.j3m**
 
 相比于在Java代码中加载材质、设置参数，我更喜欢使用j3m文件来记录材质参数。创建 `Scenes/Maps/DefaultMap/default_unshaded.j3m` 文件，写入下列内容：
 
-    Material unshaded material : Common/MatDefs/Misc/Unshaded.j3md {
-        MaterialParameters {
-            ColorMap : Scenes/Maps/DefaultMap/default_c.png
-            LightMap : Flip Scenes/Maps/DefaultMap/default_l.png
-        }
+```text
+Material unshaded material : Common/MatDefs/Misc/Unshaded.j3md {
+    MaterialParameters {
+        ColorMap : Scenes/Maps/DefaultMap/default_c.png
+        LightMap : Flip Scenes/Maps/DefaultMap/default_l.png
     }
+}
+```
 
 在Java代码中，只需要一行语句就可以加载这个材质了。
 
-        // 加载材质
-        Material material = assetManager.loadMaterial("Scenes/Maps/DefaultMap/default_unshaded.j3m");
-        terrain.setMaterial(material);
-
+```text
+    // 加载材质
+    Material material = assetManager.loadMaterial("Scenes/Maps/DefaultMap/default_unshaded.j3m");
+    terrain.setMaterial(material);
+```
 
 #### 基于等高线算法
 
@@ -604,37 +641,39 @@ TerrainQuad 是 Spatial 的子类，可以根据需要来给它设置材质，�
 * 平原，高度值50~200
 * 高原，高度值200~255
 
-![](/content/images/2017/06/terrain-from-heightmap.png)
+![](.gitbook/assets/terrain-from-heightmap.png)
 
 `jme3-terrain` 模块提供了一个 `Common/MatDefs/Terrain/HeightBasedTerrain.j3md` 材质，我们可以使用它来实现基于等高线的地形渲染。材质定义的内容是这样的：
 
-    MaterialDef Terrain {
+```text
+MaterialDef Terrain {
 
-        MaterialParameters {
-            Texture2D region1ColorMap
-            Texture2D region2ColorMap
-            Texture2D region3ColorMap
-            Texture2D region4ColorMap
-            Texture2D slopeColorMap
-            Float slopeTileFactor
-            Float terrainSize
-            Vector3 region1
-            Vector3 region2
-            Vector3 region3
-            Vector3 region4
-        }
+    MaterialParameters {
+        Texture2D region1ColorMap
+        Texture2D region2ColorMap
+        Texture2D region3ColorMap
+        Texture2D region4ColorMap
+        Texture2D slopeColorMap
+        Float slopeTileFactor
+        Float terrainSize
+        Vector3 region1
+        Vector3 region2
+        Vector3 region3
+        Vector3 region4
+    }
 
-        Technique {
-            VertexShader GLSL100:   Common/MatDefs/Terrain/HeightBasedTerrain.vert
-            FragmentShader GLSL100: Common/MatDefs/Terrain/HeightBasedTerrain.frag
+    Technique {
+        VertexShader GLSL100:   Common/MatDefs/Terrain/HeightBasedTerrain.vert
+        FragmentShader GLSL100: Common/MatDefs/Terrain/HeightBasedTerrain.frag
 
-            WorldParameters {
-                WorldViewProjectionMatrix
-                WorldMatrix
-                NormalMatrix
-            }
+        WorldParameters {
+            WorldViewProjectionMatrix
+            WorldMatrix
+            NormalMatrix
         }
     }
+}
+```
 
 在这个材质中，最多可以设置4个高度区域的纹理。第`X`个区域的贴图用`regionXColorMap`表示，高度范围用`regionX`表示。
 
@@ -646,62 +685,66 @@ terrainSize 表示地形的大小，即高度图的分辨率。
 
 创建 `Scenes/Maps/DefaultMap/default_height_based.j3m` 文件，描述材质对象。
 
-    Material height based : Common/MatDefs/Terrain/HeightBasedTerrain.j3md {
-        MaterialParameters {
+```text
+Material height based : Common/MatDefs/Terrain/HeightBasedTerrain.j3md {
+    MaterialParameters {
 
-            terrainSize : 257
+        terrainSize : 257
 
-            //slopeColorMap : Repeat Scenes/Maps/DefaultMap/Textures/bigRockFace.png
-            //slopeTileFactor : 10
+        //slopeColorMap : Repeat Scenes/Maps/DefaultMap/Textures/bigRockFace.png
+        //slopeTileFactor : 10
 
-            region1ColorMap : Repeat Scenes/Maps/DefaultMap/Textures/hardDirt.png
-            region2ColorMap : Repeat Scenes/Maps/DefaultMap/Textures/shortGrass.png
-            region3ColorMap : Repeat Scenes/Maps/DefaultMap/Textures/grayRock.png
+        region1ColorMap : Repeat Scenes/Maps/DefaultMap/Textures/hardDirt.png
+        region2ColorMap : Repeat Scenes/Maps/DefaultMap/Textures/shortGrass.png
+        region3ColorMap : Repeat Scenes/Maps/DefaultMap/Textures/grayRock.png
 
-            region1 : 0.0 60.0 20.0
-            region2 : 60.0 120.0 20.0
-            region3 : 120.0 255.0 20.0
-        }
+        region1 : 0.0 60.0 20.0
+        region2 : 60.0 120.0 20.0
+        region3 : 120.0 255.0 20.0
     }
+}
+```
 
 加载材质：
 
-        // 加载材质
-        Material material = assetManager.loadMaterial("Scenes/Maps/DefaultMap/default_height_based.j3m");
+```text
+    // 加载材质
+    Material material = assetManager.loadMaterial("Scenes/Maps/DefaultMap/default_height_based.j3m");
 
-        terrain.setMaterial(material);
+    terrain.setMaterial(material);
+```
 
 效果：
 
-![](/content/images/2017/06/terrain_height_based.png)
+![](.gitbook/assets/terrain_height_based.png)
 
 #### 抛雪球算法
 
 Texture Splatting，中文翻译为“抛雪球”算法，也叫作“足迹法”。**它是一种使用alphamap 将纹理融合到表面的技术。**
 
-一个纹理中通常有多个通道：红、绿、蓝、或者亮度。在Texture Splatting技术中，alphamap 用于控制纹理在当前位置显示颜色的**强度**。通过简单的乘法，很容易就能够调整纹理的颜色值：alphamap * texture（texture指代当前位置纹理的颜色值）。如果某像素的alphamap是1，则纹理显示全值，如果某像素的alphamap是0，则该纹理完全不显示。
+一个纹理中通常有多个通道：红、绿、蓝、或者亮度。在Texture Splatting技术中，alphamap 用于控制纹理在当前位置显示颜色的**强度**。通过简单的乘法，很容易就能够调整纹理的颜色值：alphamap \* texture（texture指代当前位置纹理的颜色值）。如果某像素的alphamap是1，则纹理显示全值，如果某像素的alphamap是0，则该纹理完全不显示。
 
 下图是[wikipedia](https://en.wikipedia.org/wiki/Texture_splatting)上对texture splatting技术的演示。在这个例子中，一共有2个texture和1个alphamap。alphamap中使用黑白二色表示了2个texture各自的颜色强度，经过混合后得到了右下的纹理。
 
-![](/content/images/2017/06/texture_splatting-1.png)
+![](.gitbook/assets/texture_splatting-1.png)
 
 这种技术允许我们使用多种不同的纹理在地形的表面作画。通过着色器实现texture splatting算法，就可以混合出丰富的颜色。
 
 一般来说，每个alphamap中最多有4个通道可以使用。例如 EarthSculptor（未注册版）的画刷功能，提供的就是4种纹理，恰好可以用1张alphamap来表示。
 
-![](/content/images/2017/06/terra_color.png)
+![](.gitbook/assets/terra_color%20%281%29.png)
 
 最终生成的alphamap看起来很怪异，仿佛是随意涂鸦而成。
 
-![](/content/images/2017/06/color_map.png)
+![](.gitbook/assets/color_map.png)
 
 实际上，alphamap中的每个通道都对应着一种纹理，例如下面4个。
 
-![](/content/images/2017/06/texture_splatting.png)
+![](.gitbook/assets/texture_splatting.png)
 
 当它们混色之后，就可以得到下面的实际纹理。
 
-![](/content/images/2017/06/splatting.png)
+![](.gitbook/assets/splatting.png)
 
 `jme3-terrain` 提供了2个材质，都实现了 texture-splatting 算法。
 
@@ -718,11 +761,11 @@ Texture Splatting，中文翻译为“抛雪球”算法，也叫作“足迹法
 
 `useTriPlanarMapping = false`
 
-![](/content/images/2017/06/triPlanar-regularTerrain.jpg)
+![](.gitbook/assets/triPlanar-regularTerrain.jpg)
 
 `useTriPlanarMapping = true`
 
-![](/content/images/2017/06/triPlanar-Terrain.jpg)
+![](.gitbook/assets/triPlanar-Terrain.jpg)
 
 **TerrainLighting.j3md**
 
@@ -762,14 +805,16 @@ Texture Splatting，中文翻译为“抛雪球”算法，也叫作“足迹法
 
 下图是使用 `TerrainLighting.j3md` 材质渲染出来的地形。
 
-![](/content/images/2017/06/DefaultMap.png)
+![](.gitbook/assets/DefaultMap.png)
 
 ### 地形的碰撞检测
 
 根据前面我们在“物理引擎”章节中讲解过的知识，对地形进行碰撞检测是很容易的。首先为Terrain增加一个质量为0的刚体控制器（RigidBodyControl），然后把它添加到Bullet的物理空间（PhysicsSpace）即可。
 
-    terrain.addControl(new RigidBodyControl(0));
-    bulletAppState.getPhysicsSpace().add(terrain);
+```text
+terrain.addControl(new RigidBodyControl(0));
+bulletAppState.getPhysicsSpace().add(terrain);
+```
 
 官方范例：[TerrainTestCollision.java](https://github.com/jMonkeyEngine/jmonkeyengine/blob/master/jme3-examples/src/main/java/jme3test/terrain/TerrainTestCollision.java)
 
@@ -781,13 +826,126 @@ Texture Splatting，中文翻译为“抛雪球”算法，也叫作“足迹法
 
 高斯模糊前：
 
-![](/content/images/2017/06/BeforeGaussianBlur.png)
+![](.gitbook/assets/BeforeGaussianBlur.png)
 
 高随模糊后：
 
-![](/content/images/2017/06/AfterGaussianBlur.png)
+![](.gitbook/assets/AfterGaussianBlur.png)
 
 使用方法：
+
+```text
+    // 加载地形的高度图
+    Texture heightMapImage = assetManager.loadTexture("Scenes/Maps/DefaultMap/default.png");
+
+    // 根据图像内容，生成高度图
+    ImageBasedHeightMap heightmap = new ImageBasedHeightMap(heightMapImage.getImage(), 1f);
+    heightmap.load();
+
+    // 高斯平滑
+    GaussianBlur gaussianBlur = new GaussianBlur();
+
+    float[] heightData = heightmap.getHeightMap();
+    int width = heightMapImage.getImage().getWidth();
+    int height = heightMapImage.getImage().getHeight();
+
+    heightData = gaussianBlur.filter(heightData, width, height);
+
+    /*
+     * 根据高度图生成实际的地形。该地形被分解成边长65(64*64)的矩形区块，用于优化网格。高度图的边长为 257，分辨率 256*256。
+     */
+    TerrainQuad terrain = new TerrainQuad("terrain", 65, 257, heightmap.getHeightMap());
+```
+
+## 实例：户外场景
+
+现在，你已经学会了如何在jME3中制作天空、海洋和大地。下面以一个完整的例子来结束本章的内容。
+
+```text
+package net.jmecn.outscene;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.scene.Spatial;
+import com.jme3.terrain.geomipmap.TerrainLodControl;
+import com.jme3.terrain.geomipmap.TerrainQuad;
+import com.jme3.terrain.geomipmap.lodcalc.DistanceLodCalculator;
+import com.jme3.terrain.heightmap.ImageBasedHeightMap;
+import com.jme3.texture.Texture;
+import com.jme3.util.SkyFactory;
+import com.jme3.water.WaterFilter;
+
+/**
+ * 通过高度图加载地形。
+ *
+ * @author yanmaoyuan
+ *
+ */
+public class HelloTerrain extends SimpleApplication {
+
+    @Override
+    public void simpleInitApp() {
+
+        cam.setLocation(new Vector3f(-100, 80, 50));
+
+        flyCam.setMoveSpeed(20f);
+
+        initLight();
+
+        initSky();
+
+        initWater();
+
+        initTerrain();
+    }
+
+    /**
+     * 初始化灯光
+     */
+    private void initLight() {
+        AmbientLight ambient = new AmbientLight();
+        ambient.setColor(new ColorRGBA(0.298f, 0.2392f, 0.2745f, 1f));
+        rootNode.addLight(ambient);
+
+        DirectionalLight light = new DirectionalLight();
+        light.setDirection((new Vector3f(0.097551f, -0.733139f, -0.673046f)).normalize());
+        light.setColor(new ColorRGBA(1, 1, 1, 1));
+        rootNode.addLight(light);
+    }
+
+    /**
+     * 初始化天空
+     */
+    private void initSky() {
+        Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/SkySphereMap.jpg",
+                SkyFactory.EnvMapType.SphereMap);
+        rootNode.attachChild(sky);
+    }
+
+    /**
+     * 初始化水面
+     */
+    private void initWater() {
+        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        viewPort.addProcessor(fpp);
+
+        // 水
+        WaterFilter waterFilter = new WaterFilter();
+        waterFilter.setWaterHeight(50f);// 水面高度
+        waterFilter.setWaterTransparency(0.2f);// 透明度
+        waterFilter.setWaterColor(new ColorRGBA(0.4314f, 0.9373f, 0.8431f, 1f));// 水面颜色
+
+        fpp.addFilter(waterFilter);
+    }
+
+    /**
+     * 初始化地形
+     */
+    private void initTerrain() {
 
         // 加载地形的高度图
         Texture heightMapImage = assetManager.loadTexture("Scenes/Maps/DefaultMap/default.png");
@@ -810,138 +968,29 @@ Texture Splatting，中文翻译为“抛雪球”算法，也叫作“足迹法
          */
         TerrainQuad terrain = new TerrainQuad("terrain", 65, 257, heightmap.getHeightMap());
 
-## 实例：户外场景
+        // 层次细节
+        TerrainLodControl control = new TerrainLodControl(terrain, getCamera());
+        control.setLodCalculator(new DistanceLodCalculator(65, 2.7f));
+        terrain.addControl(control);
 
-现在，你已经学会了如何在jME3中制作天空、海洋和大地。下面以一个完整的例子来结束本章的内容。
+        // 地形材质
+        terrain.setMaterial(assetManager.loadMaterial("Scenes/Maps/DefaultMap/default.j3m"));
 
-    package net.jmecn.outscene;
-
-    import com.jme3.app.SimpleApplication;
-    import com.jme3.light.AmbientLight;
-    import com.jme3.light.DirectionalLight;
-    import com.jme3.math.ColorRGBA;
-    import com.jme3.math.Vector3f;
-    import com.jme3.post.FilterPostProcessor;
-    import com.jme3.scene.Spatial;
-    import com.jme3.terrain.geomipmap.TerrainLodControl;
-    import com.jme3.terrain.geomipmap.TerrainQuad;
-    import com.jme3.terrain.geomipmap.lodcalc.DistanceLodCalculator;
-    import com.jme3.terrain.heightmap.ImageBasedHeightMap;
-    import com.jme3.texture.Texture;
-    import com.jme3.util.SkyFactory;
-    import com.jme3.water.WaterFilter;
-
-    /**
-     * 通过高度图加载地形。
-     *
-     * @author yanmaoyuan
-     *
-     */
-    public class HelloTerrain extends SimpleApplication {
-
-        @Override
-        public void simpleInitApp() {
-
-            cam.setLocation(new Vector3f(-100, 80, 50));
-
-            flyCam.setMoveSpeed(20f);
-
-            initLight();
-
-            initSky();
-
-            initWater();
-
-            initTerrain();
-        }
-
-        /**
-         * 初始化灯光
-         */
-        private void initLight() {
-            AmbientLight ambient = new AmbientLight();
-            ambient.setColor(new ColorRGBA(0.298f, 0.2392f, 0.2745f, 1f));
-            rootNode.addLight(ambient);
-
-            DirectionalLight light = new DirectionalLight();
-            light.setDirection((new Vector3f(0.097551f, -0.733139f, -0.673046f)).normalize());
-            light.setColor(new ColorRGBA(1, 1, 1, 1));
-            rootNode.addLight(light);
-        }
-
-        /**
-         * 初始化天空
-         */
-        private void initSky() {
-            Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/SkySphereMap.jpg",
-                    SkyFactory.EnvMapType.SphereMap);
-            rootNode.attachChild(sky);
-        }
-
-        /**
-         * 初始化水面
-         */
-        private void initWater() {
-            FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-            viewPort.addProcessor(fpp);
-
-            // 水
-            WaterFilter waterFilter = new WaterFilter();
-            waterFilter.setWaterHeight(50f);// 水面高度
-            waterFilter.setWaterTransparency(0.2f);// 透明度
-            waterFilter.setWaterColor(new ColorRGBA(0.4314f, 0.9373f, 0.8431f, 1f));// 水面颜色
-
-            fpp.addFilter(waterFilter);
-        }
-
-        /**
-         * 初始化地形
-         */
-        private void initTerrain() {
-
-            // 加载地形的高度图
-            Texture heightMapImage = assetManager.loadTexture("Scenes/Maps/DefaultMap/default.png");
-
-            // 根据图像内容，生成高度图
-            ImageBasedHeightMap heightmap = new ImageBasedHeightMap(heightMapImage.getImage(), 1f);
-            heightmap.load();
-
-            // 高斯平滑
-            GaussianBlur gaussianBlur = new GaussianBlur();
-
-            float[] heightData = heightmap.getHeightMap();
-            int width = heightMapImage.getImage().getWidth();
-            int height = heightMapImage.getImage().getHeight();
-
-            heightData = gaussianBlur.filter(heightData, width, height);
-
-            /*
-             * 根据高度图生成实际的地形。该地形被分解成边长65(64*64)的矩形区块，用于优化网格。高度图的边长为 257，分辨率 256*256。
-             */
-            TerrainQuad terrain = new TerrainQuad("terrain", 65, 257, heightmap.getHeightMap());
-
-            // 层次细节
-            TerrainLodControl control = new TerrainLodControl(terrain, getCamera());
-            control.setLodCalculator(new DistanceLodCalculator(65, 2.7f));
-            terrain.addControl(control);
-
-            // 地形材质
-            terrain.setMaterial(assetManager.loadMaterial("Scenes/Maps/DefaultMap/default.j3m"));
-
-            terrain.setLocalTranslation(0, -100, 0);
-            rootNode.attachChild(terrain);
-        }
-
-        public static void main(String[] args) {
-            HelloTerrain app = new HelloTerrain();
-            app.start();
-        }
-
+        terrain.setLocalTranslation(0, -100, 0);
+        rootNode.attachChild(terrain);
     }
+
+    public static void main(String[] args) {
+        HelloTerrain app = new HelloTerrain();
+        app.start();
+    }
+
+}
+```
 
 效果图：
 
-![outscene](/content/images/2017/06/outscene.png)
+![outscene](.gitbook/assets/outscene.png)
 
 ## 扩展阅读
 
@@ -949,7 +998,8 @@ Texture Splatting，中文翻译为“抛雪球”算法，也叫作“足迹法
 * [拒绝被忽悠 游戏画面效果知识大扫盲](http://xielei-1026.blog.sohu.com/196161497.html)
 * [游戏图像秘密大起底！一帧 3D 游戏画面是如何诞生的？](http://www.ipc.me/gta-v-graphics-study.html)
 * [NVIDIA视觉特效](https://developer.nvidia.com/gameworks-visualfx-overview)
-* [[英雄联盟]工程师讲述做场景渲染的全过程](http://www.gamelook.com.cn/2017/01/280474)
+* [\[英雄联盟\]工程师讲述做场景渲染的全过程](http://www.gamelook.com.cn/2017/01/280474)
 * [在顶级游戏开发的过程中需要怎样的编程实力？](https://www.zhihu.com/question/57582995)
 * [好的游戏制作人需要对人性有哪些理解？](https://www.zhihu.com/question/46465078/answer/101566563)
 * [《阴阳师》手游：为肝而肝](https://zhuanlan.zhihu.com/p/22435275)
+
